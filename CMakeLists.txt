@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.7)
 project(blaze_iterative)
 
+
+find_package(blaze)
+
 set(CMAKE_CXX_STANDARD 14)
 
 set(SOURCE_FILES
@@ -12,4 +15,4 @@ set(SOURCE_FILES
         blaze_iterative/solvers/ConjugateGradient.hpp
         )
 
-include_directories(${CMAKE_SOURCE_DIR}/../blaze/blaze)
+add_subdirectory(tests)

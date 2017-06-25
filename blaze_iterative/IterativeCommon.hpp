@@ -5,7 +5,7 @@
 #ifndef BLAZE_ITERATIVE_ITERATIVE_COMMON_HPP
 #define BLAZE_ITERATIVE_ITERATIVE_COMMON_HPP
 
-#include "Blaze.h"
+#include "blaze/Blaze.h"
 
 #define BLAZE_NAMESPACE_OPEN namespace blaze {
 #define BLAZE_NAMESPACE_CLOSE }
