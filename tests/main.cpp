@@ -10,7 +10,7 @@ using namespace blaze::iterative;
 
 int main() {
 
-    std::size_t N = 10;
+    std::size_t N = 1000;
     DynamicMatrix<double,columnMajor> A(N,N, 0.0);
     DynamicVector<double> b(N, 0.0);
 
