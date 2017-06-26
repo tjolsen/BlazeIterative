@@ -16,7 +16,12 @@ Planned algorithms:
 - Preconditioned BiCGSTAB
 - (Preconditioned) BiCGSTAB(l)
 - GMRES
+
+Potential algorithms (if sufficient interest):
+- Arnoldi
+- Lanczos
 - LSQR
 - LSMR
+
 
 Please open an issue to discuss/request features.
