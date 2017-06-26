@@ -7,5 +7,7 @@
 
 #include "ConjugateGradientTag.hpp"
 #include "ConjugateGradient.hpp"
+#include "BiCGSTABTag.hpp"
+#include "BiCGSTAB.hpp"
 
 #endif //BLAZE_ITERATIVE_SOLVERS_HPP

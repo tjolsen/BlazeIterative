@@ -10,7 +10,7 @@ using namespace blaze::iterative;
 
 int main() {
 
-    std::size_t N = 1000;
+    std::size_t N = 10;
     DynamicMatrix<double,columnMajor> A(N,N, 0.0);
     DynamicVector<double> b(N, 0.0);
 
@@ -19,7 +19,7 @@ int main() {
         b[i] = 1.0*(1+i);
     }
 
-    ConjugateGradientTag tag;
+    BiCGSTABTag tag;
     tag.do_log() = true;
 
     std::cout << solve(A,b,tag) << std::endl << std::endl;
