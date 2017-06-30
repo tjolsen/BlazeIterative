@@ -13,6 +13,10 @@ set(SOURCE_FILES
 
         blaze_iterative/solvers/ConjugateGradientTag.hpp
         blaze_iterative/solvers/ConjugateGradient.hpp
+        blaze_iterative/solvers/BiCGSTABTag.hpp
+        blaze_iterative/solvers/BiCGSTAB.hpp
         )
+
+add_library(BlazeIterative INTERFACE)
 
 add_subdirectory(tests)
