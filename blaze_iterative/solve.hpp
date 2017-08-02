@@ -15,6 +15,8 @@ ITERATIVE_NAMESPACE_OPEN
 
 /**
  * Solve a linear system using a preallocated buffer "x".
+ * The values in "x" are used as the initial guess for
+ * the iterative algorithm.
  */
 template<typename MatrixType, typename T, typename TagType>
 void solve_inplace(DynamicVector<T> &x,
@@ -40,7 +42,8 @@ void solve_inplace(DynamicVector<T> &x,
 
 /**
  * \brief Solver the linear system \f$ Ax = b \f$ using an iterative solver.
- * Top-level entry-point to the iterative solver collection.
+ *
+ * Top-level entry point to the iterative solver collection.
  * This method returns a newly-allocated blaze::DynamicVector<T>
  * by allocating the return vector and calling the solve_inplace
  * method. All data integrity checking (that can be done independent

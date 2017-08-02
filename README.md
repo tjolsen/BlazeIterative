@@ -1,8 +1,8 @@
 Blaze-Iterative
 ===============
 
-This is a set of iterative linear system solvers intended for inclusion 
-into the Blaze library, a high-performance C++ linear algebra library
+This is a set of iterative linear system solvers intended for use
+with the Blaze library, a high-performance C++ linear algebra library
 (https://bitbucket.org/blaze-lib/).
 The API is currently based on a tag-dispatch system to choose a particular algorithm.
 
@@ -16,10 +16,10 @@ Planned algorithms:
 - Preconditioned BiCGSTAB
 - (Preconditioned) BiCGSTAB(l)
 - GMRES
-
-Potential algorithms (if sufficient interest):
 - Arnoldi
 - Lanczos
+
+Potential algorithms (if sufficient interest):
 - LSQR
 - LSMR
 
