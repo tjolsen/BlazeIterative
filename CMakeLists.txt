@@ -10,7 +10,6 @@ set(SOURCE_FILES
         blaze_iterative/IterativeCommon.hpp
         blaze_iterative/IterativeTag.hpp
         blaze_iterative/solve.hpp
-
         blaze_iterative/solvers/ConjugateGradientTag.hpp
         blaze_iterative/solvers/ConjugateGradient.hpp
         blaze_iterative/solvers/BiCGSTABTag.hpp
@@ -20,3 +19,6 @@ set(SOURCE_FILES
 add_library(BlazeIterative INTERFACE)
 
 add_subdirectory(tests)
+
+install(DIRECTORY blaze_iterative DESTINATION ${CMAKE_INSTALL_PREFIX} 
+	PATTERN "*.hpp") 
