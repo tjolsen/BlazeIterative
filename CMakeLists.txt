@@ -49,7 +49,7 @@ install(
   DIRECTORY include/
   DESTINATION include/BlazeIterative
   FILES_MATCHING PATTERN "*.hpp")
-install(EXPORT BlazeIterativeConfig DESTINATION cmake
+install(EXPORT BlazeIterativeConfig DESTINATION share/BlazeIterative/cmake
   NAMESPACE BlazeIterative::)
 
 
