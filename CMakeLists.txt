@@ -38,7 +38,6 @@ target_include_directories(BlazeIterative INTERFACE
 # Import Blaze and "link" to BlazeIterative
 #==========================================
 find_package(blaze REQUIRED)
-#add_library(blaze::blaze IMPORTED INTERFACE)
 target_link_libraries(BlazeIterative INTERFACE blaze::blaze)
 
 #==========================================
