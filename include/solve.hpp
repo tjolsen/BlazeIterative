@@ -58,7 +58,7 @@ void solve_inplace(DynamicVector<T> &x,
  * members/methods available only to a particular iterative method.
  */
 template<typename MatrixType, typename T, typename TagType>
-DynamicVector<T> solve(const MatrixType &A, DynamicVector<T> &b, TagType &tag)
+DynamicVector<T> solve(const MatrixType &A, const DynamicVector<T> &b, TagType &tag)
 {
     DynamicVector<T> x(b.size(), 0.0);
     solve_inplace(x, A, b, tag);
