@@ -1,9 +1,2 @@
-<<<<<<< HEAD
-include_directories(${CMAKE_SOURCE_DIR}/blaze_iterative)
-get_target_property(INCLUDES blaze::blaze INTERFACE_INCLUDE_DIRECTORIES)
 add_executable(blz_iter_test main.cpp)
-target_include_directories(blz_iter_test PUBLIC ${INCLUDES})
-=======
-add_executable(blz_iter_test main.cpp)
->>>>>>> upstream/master
 target_link_libraries(blz_iter_test BlazeIterative)

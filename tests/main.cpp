@@ -19,7 +19,7 @@ int main() {
         b[i] = 1.0*(1+i);
     }
 
-    BiCGSTABTag tag;
+    PreconditionBiCGSTABTag tag;
     tag.do_log() = true;
 
     std::cout << solve(A,b,tag) << std::endl << std::endl;

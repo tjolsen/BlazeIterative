@@ -23,6 +23,8 @@ set(SOURCE_FILES
   ${CMAKE_CURRENT_SOURCE_DIR}/include/solvers/ConjugateGradient.hpp
   ${CMAKE_CURRENT_SOURCE_DIR}/include/solvers/BiCGSTABTag.hpp
   ${CMAKE_CURRENT_SOURCE_DIR}/include/solvers/BiCGSTAB.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/include/solvers/PreconditionBiCGSTAB.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/include/solvers/PreconditionBiCGSTABTag.hpp
   )
 
 # target_sources not necessary for header-only library, but makes it more

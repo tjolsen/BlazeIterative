@@ -9,5 +9,7 @@
 #include "ConjugateGradient.hpp"
 #include "BiCGSTABTag.hpp"
 #include "BiCGSTAB.hpp"
+#include "PreconditionBiCGSTABTag.hpp"
+#include "PreconditionBiCGSTAB.hpp"
 
 #endif //BLAZE_ITERATIVE_SOLVERS_HPP
