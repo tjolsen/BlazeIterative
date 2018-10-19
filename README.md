@@ -9,11 +9,10 @@ The API is currently based on a tag-dispatch system to choose a particular algor
 Currently implemented algorithms:
 - Conjugate Gradient (CG)
 - BiCGSTAB
-
+- Preconditioned BiCGSTAB
 
 Planned algorithms:
 - Preconditioned CG
-- Preconditioned BiCGSTAB
 - (Preconditioned) BiCGSTAB(l)
 - GMRES
 - Arnoldi

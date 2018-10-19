@@ -1,6 +1,7 @@
-//
-// Created by tyler on 6/25/17.
-//
+// Copyright (c)   2017 Tyler Olsen
+//                 2018 Patrick Diehl
+// Distributed under the Boost Software License, Version 1.0. (See accompanying
+// file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 #ifndef BLAZE_ITERATIVE_PRECONDITIONBICGSTAB_HPP
 #define BLAZE_ITERATIVE_PRECONDITIONBICGSTAB_HPP
@@ -12,6 +13,9 @@ ITERATIVE_NAMESPACE_OPEN
 
 namespace detail {
 
+/**
+ *  Implementation of the decompositions provided by blaze
+ */
 template<typename MatrixType, typename T>
 void decomposition(std::string type, const MatrixType &A, MatrixType &K1, MatrixType &K2){
     
@@ -46,24 +50,23 @@ void decomposition(std::string type, const MatrixType &A, MatrixType &K1, Matrix
      
 }    
     
-    
-    
 /**
  *  Implementation of the Preconditioned BiCGSTAB method, following the
- *  preconditioned version on Wikipedia using a LU Decomposition.
+ *  preconditioned version on Wikipedia using various decompositions.
  */
 template<typename MatrixType, typename T>
 void solve_impl(
         DynamicVector<T> &x,
         const MatrixType &A,
         const DynamicVector<T> &b,
-        PreconditionBiCGSTABTag &tag)
+        PreconditionBiCGSTABTag &tag,
+        std::string Preconditioner)
 {
 
     // Decomposition A = K1 * K2
     MatrixType K1;
     MatrixType K2;
-    decomposition<MatrixType,T>("LU",A,K1,K2);
+    decomposition<MatrixType,T>(Preconditioner,A,K1,K2);
     
     // Compute inverse
     auto Kinv = inv(K1*K2);
