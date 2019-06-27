@@ -13,8 +13,8 @@ BLAZE_NAMESPACE_OPEN
 ITERATIVE_NAMESPACE_OPEN
 
 /**
- * \class BiCGSTABTag
- * \brief Tag type to dispatch a BiCGSTAB solver
+ * \class PreconditionBiCGSTABTag
+ * \brief Tag type to dispatch a preconditioned BiCGSTAB   solver
  *
  * BiCGSTAB is a modified version of the biconjugate gradient
  * method with improved convergence properties. It is suitable

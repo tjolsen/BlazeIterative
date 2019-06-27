@@ -39,7 +39,7 @@ void decomposition(std::string type, const MatrixType &A, MatrixType &K1, Matrix
         rq( A, K1, K2 ); //RQ decomposition of a row-major matrix
     }
     
-    if (type.compare("LU")){
+    if (type.compare("LU") || type.compare("")){
         
     MatrixType P;
     lu( A, K1, K2, P ); 
@@ -60,7 +60,7 @@ void solve_impl(
         const MatrixType &A,
         const DynamicVector<T> &b,
         PreconditionBiCGSTABTag &tag,
-        std::string Preconditioner)
+        std::string Preconditioner="")
 {
 
     // Decomposition A = K1 * K2

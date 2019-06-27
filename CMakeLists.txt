@@ -41,6 +41,9 @@ target_include_directories(BlazeIterative INTERFACE
 #==========================================
 find_package(blaze REQUIRED)
 target_link_libraries(BlazeIterative INTERFACE blaze::blaze)
+target_link_options(BlazeIterative INTERFACE "-llapack")
+
+
 
 #==========================================
 # Install library
