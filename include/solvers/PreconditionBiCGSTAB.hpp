@@ -20,26 +20,27 @@ template<typename MatrixType, typename T>
 void decomposition(std::string type, const MatrixType &A, MatrixType &K1, MatrixType &K2){
     
     
-    if (type.compare("Cholesky")){
-        
+    if (type.compare("Cholesky")==0){
+
         MatrixType L;
         llh( A, L );  // LLH decomposition of a row-major matrix
         K1 = L;
         K2 = ctrans(L); 
     }
     
-    if (type.compare("QR")){
+    if (type.compare("QR")==0){
         
         qr( A, K1, K2 );  //QR decomposition of a row-major matrix
         
     }
     
-    if (type.compare("RQ")){
+    if (type.compare("RQ")==0){
         
         rq( A, K1, K2 ); //RQ decomposition of a row-major matrix
     }
     
-    if (type.compare("LU") || type.compare("")){
+
+    if (type.compare("LU") == 0 || type.compare("") == 0){
         
     MatrixType P;
     lu( A, K1, K2, P ); 
