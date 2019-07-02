@@ -23,10 +23,14 @@ int main() {
         b[i] = 1.0*(1+i);
     }
 
-    PreconditionBiCGSTABTag tag;
-    tag.do_log() = true;
+    //ConjugateGradientTag tag;
+    //BiCGSTABTag tag;
+    //tag.do_log() = true;
 
-    std::cout << solve(A,b,tag) << std::endl << std::endl;
+    //std::cout << solve(A,b,tag) << std::endl << std::endl;
+
+    PreconditionBiCGSTABTag tag;
+    std::cout << solve(A,b,tag, "Cholesky") << std::endl << std::endl;
 
     int iter(0);
     for(auto r : tag.convergence_history()) {
