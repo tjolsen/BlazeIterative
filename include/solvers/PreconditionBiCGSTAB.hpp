@@ -39,8 +39,12 @@ void decomposition(std::string type, const MatrixType &A, MatrixType &K1, Matrix
         rq( A, K1, K2 ); //RQ decomposition of a row-major matrix
     }
     
+<<<<<<< HEAD
 
     if (type.compare("LU") == 0 || type.compare("") == 0){
+=======
+    if (type.compare("LU")==0){
+>>>>>>> 15d9b437d1f72412022e3f2192f3bddccaa90329
         
     MatrixType P;
     lu( A, K1, K2, P ); 
