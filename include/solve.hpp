@@ -11,6 +11,7 @@
 #include "solvers/solvers.hpp"
 #include <type_traits>
 #include <cstring>
+#include <utility> // make_pair for returning a pair of values
 
 BLAZE_NAMESPACE_OPEN
 ITERATIVE_NAMESPACE_OPEN
@@ -61,6 +62,32 @@ void solve_inplace(DynamicVector<T> &x,
     // Call specific solver
     detail::solve_impl(x, A, b, tag,Preconditioner);
 };
+
+// For Arnoldi
+// Solve for eigenvalues
+    template<typename MatrixType, typename T, typename TagType>
+    void solve_inplace(
+                        MatrixType &h,
+                        MatrixType &Q,
+                       const MatrixType &A,
+                       const DynamicVector<T> &b,
+                       TagType &tag,
+                       const std::size_t &n
+                        )
+    {
+        //Compile-time assertions
+        BLAZE_CONSTRAINT_MUST_BE_MATRIX_TYPE(MatrixType);
+        static_assert(std::is_same<T, typename MatrixType::ElementType>::value,
+                      "Matrix and vector data types must be the same");
+
+        //Run-time assertions checking conditions that would be problems later anyway
+        assert(A.columns() == b.size() && "A and b must have consistent dimensions");
+        assert(A.rows() == A.columns() && "A must be a square matrix");
+        assert(n >= 1 && "n must be larger than or equal to 1");
+
+        // Call specific solver
+        detail::solve_impl(h,Q,A, b, tag, n);
+    };
 
 /**
  * \brief Solver the linear system \f$ Ax = b \f$ using an iterative solver.
@@ -116,6 +143,18 @@ DynamicVector<T> solve(const MatrixType &A,
 
     return x;
 };
+
+// For Arnoldi
+    template<typename MatrixType, typename T, typename TagType>
+    std::pair<MatrixType, MatrixType> solve(const MatrixType &A, const DynamicVector<T> &b, TagType &tag,const std::size_t &n)
+    {
+        MatrixType Q(b.size(), (n + 1));
+        MatrixType h((n + 1), n);
+        solve_inplace(h,Q,A, b, tag, n);
+
+       return std::make_pair(Q,h);
+    };
+
 
 ITERATIVE_NAMESPACE_CLOSE
 BLAZE_NAMESPACE_CLOSE
