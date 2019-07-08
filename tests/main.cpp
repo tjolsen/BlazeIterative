@@ -53,8 +53,8 @@ int main() {
     DynamicVector<complex<double>,columnVector> w(N); // The vector for the real eigenvalues
     DynamicMatrix<complex<double>,rowMajor> V(N,N); // The matrix for the left eigenvectors
     eigen(A,w,V);
-    std::cout<< "The eigenvalues of Matrix A is: " << w << std::endl;
-    std::cout << "The eigenvectors of Matrix A is: " << V << std::endl;
+    std::cout<< "The eigenvalues of Matrix A is: " << std::endl << w << std::endl;
+    //std::cout << "The eigenvectors of Matrix A is: " << V << std::endl;
 
     DynamicVector<complex<double>,columnVector> w1(N); // The vector for the real eigenvalues
     DynamicMatrix<complex<double>,rowMajor> V1(N,N); // The matrix for the left eigenvectors
@@ -65,9 +65,8 @@ int main() {
     ArnoldiTag tag;
     auto res = solve(A,b,tag,n);
     //eigen(h,w1,V1);
-    std::cout << res.second;
-    std::cout<< "The eigenvalues of Matrix h is: " << w1 << std::endl;
-    std::cout << "The eigenvectors of Matrix h is: " << V1 << std::endl;
+    std::cout << "The eigenvalues of Matrix h is: " <<std::endl << res.second << std::endl;
+
 
     return 0;
 }
