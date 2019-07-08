@@ -25,6 +25,8 @@ set(SOURCE_FILES
   ${CMAKE_CURRENT_SOURCE_DIR}/include/solvers/BiCGSTAB.hpp
   ${CMAKE_CURRENT_SOURCE_DIR}/include/solvers/PreconditionBiCGSTAB.hpp
   ${CMAKE_CURRENT_SOURCE_DIR}/include/solvers/PreconditionBiCGSTABTag.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/include/solvers/Arnoldi.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/include/solvers/ArnoldiTag.hpp
   )
 
 # target_sources not necessary for header-only library, but makes it more
