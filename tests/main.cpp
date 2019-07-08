@@ -45,10 +45,20 @@ int main() {
    */
 
     // Test Arnoldi
-    std::size_t N = 3;
-    DynamicMatrix<double,columnMajor> A{{-2, -4, 2},
-                                        {-2, 1, 2},
-                                        {4, 2, 5}};
+    std::size_t N = 10;
+
+    DynamicMatrix<double,columnMajor> A(N,N, 0.0);
+    for(int i=1; i<N-1; ++i) {
+        A(i, i-1) = -1.0;
+        A(i,i) = 2.0;
+        A(i,i+1) = -1.0;
+    }
+    A(0,1) = -1.0;
+    A(0,0) = 2.0;
+    A(9,8) = -1.0;
+    A(9,9) = 2.0;
+    std::cout<< "The Matrix A is: " << std::endl << A << std::endl;
+
     DynamicVector<double> b(N, 1.0);
     DynamicVector<complex<double>,columnVector> w(N); // The vector for the real eigenvalues
     DynamicMatrix<complex<double>,rowMajor> V(N,N); // The matrix for the left eigenvectors
@@ -65,7 +75,7 @@ int main() {
     ArnoldiTag tag;
     auto res = solve(A,b,tag,n);
     //eigen(h,w1,V1);
-    std::cout << "The eigenvalues of Matrix h is: " <<std::endl << res.second << std::endl;
+    std::cout << "The Matrix h is: " <<std::endl << res.second << std::endl;
 
 
     return 0;
