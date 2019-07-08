@@ -11,7 +11,7 @@
 #include "solvers/solvers.hpp"
 #include <type_traits>
 #include <cstring>
-#include <utility> // make_pair for returning a pair of values
+#include <utility>
 
 BLAZE_NAMESPACE_OPEN
 ITERATIVE_NAMESPACE_OPEN
@@ -66,14 +66,12 @@ void solve_inplace(DynamicVector<T> &x,
 // For Arnoldi
 // Solve for eigenvalues
     template<typename MatrixType, typename T, typename TagType>
-    void solve_inplace(
-                        MatrixType &h,
-                        MatrixType &Q,
+    void solve_inplace(MatrixType &h,
+                       MatrixType &Q,
                        const MatrixType &A,
                        const DynamicVector<T> &b,
                        TagType &tag,
-                       const std::size_t &n
-                        )
+                       const std::size_t &n)
     {
         //Compile-time assertions
         BLAZE_CONSTRAINT_MUST_BE_MATRIX_TYPE(MatrixType);
