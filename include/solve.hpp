@@ -153,15 +153,6 @@ DynamicVector<T> solve(const MatrixType &A,
        return std::make_pair(Q,h);
     };
 
-    // For preconditionCG
-    template<typename MatrixType, typename T, typename TagType>
-    DynamicVector<T> solve(const MatrixType &A, const DynamicVector<T> &b, TagType &tag, std::string Preconditioner)
-    {
-        DynamicVector<T> x(b.size(), 0.0);
-        solve_inplace(x, A, b, tag, Preconditioner);
-
-        return x;
-    };
 
 ITERATIVE_NAMESPACE_CLOSE
 BLAZE_NAMESPACE_CLOSE

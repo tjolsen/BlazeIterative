@@ -14,13 +14,18 @@ ITERATIVE_NAMESPACE_OPEN
 
     namespace detail {
 
-        template<typename MatrixType>
-        void preconditioner_matrix(std::string type, const MatrixType &A, const MatrixType &M){
+        template<typename MatrixType, typename T>
+        void preconditioner_matrix(std::string type, const MatrixType &A, MatrixType &M){
 
 
             if (type.compare("Jacobi preconditioning")==0){
+                auto diag = diagonal( A );
 
-                M = invert<asDiagonal>(A);  // M = D
+                auto row_A = row(A, 0);
+                std::size_t n = row_A.size();
+
+                M =
+
             }
 
             if (type.compare("Gauss Seidel preconditioning")==0){
@@ -97,7 +102,7 @@ ITERATIVE_NAMESPACE_OPEN
 
             BLAZE_INTERNAL_ASSERT(A.isSymmetric(), "A must be a symmetric matrix")
 
-            const MatrixType M;
+            MatrixType M;
             preconditioner_matrix<MatrixType>(Preconditioner,A,M);
 
             auto Minv = inv(M);
