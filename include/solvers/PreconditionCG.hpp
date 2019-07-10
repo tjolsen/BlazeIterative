@@ -13,81 +13,176 @@ BLAZE_NAMESPACE_OPEN
 ITERATIVE_NAMESPACE_OPEN
 
     namespace detail {
-
+        // Decompose A as A = L + D + U, where L is strictly lower triangular matrix, D is diagonal matrix, and U is
+        // strictly upper triangular matrix.
         template<typename MatrixType, typename T>
         void preconditioner_matrix(std::string type, const MatrixType &A, MatrixType &M){
 
-
             if (type.compare("Jacobi preconditioning")==0){
-                auto diag = diagonal( A );
-
-                auto row_A = row(A, 0);
-                std::size_t n = row_A.size();
-
-                M =
-
+                // M = D
+                std::size_t n = A.columns();
+                MatrixType D(n,n);
+                for(std::size_t i = 0; i < n; ++i){
+                    for(std::size_t j = 0; j < n; ++j){
+                        if(j == i){
+                            D(i,j) = A(i,j);
+                        }
+                        else {
+                            D(i,j) = 0;
+                        }
+                    }
+                }
+                M = D;
             }
 
             if (type.compare("Gauss Seidel preconditioning")==0){
+                std::size_t n = A.columns();
+                MatrixType L(n,n), D(n,n);
+                for(std::size_t i = 0; i < n; ++i){
+                    for(std::size_t j = 0; j < n; ++j){
+                        if(j < i){
+                            L(i,j) = A(i,j);
+                        }
+                        else{
+                            L(i,j) = 0;
+                        }
+                    }
+                }
 
-                M = invert<asLower>(A) + invert<asUpper>(A); // M = L + D
+                for(std::size_t i = 0; i < n; ++i){
+                    for(std::size_t j = 0; j < n; ++j){
+                        if(j == i){
+                            D(i,j) = A(i,j);
+                        }
+                        else {
+                            D(i,j) = 0;
+                        }
+                    }
+                }
+
+                M = L + D; // M = L + D
             }
 
             if (type.compare("Symmetric Gauss Seidel preconditioning")==0){
-                auto D = invert<asDiagonal>(A);
-                auto L = invert<asLower>(A);
-                auto U = invert<asUpper>(A);
+
+                std::size_t n = A.columns();
+                MatrixType L(n,n), D(n,n), U(n,n);
+                for(std::size_t i = 0; i < n; ++i){
+                    for(std::size_t j = 0; j < n; ++j){
+                        if(j < i){
+                            L(i,j) = A(i,j);
+                        }
+                        else{
+                            L(i,j) = 0;
+                        }
+                    }
+                }
+
+                for(std::size_t i = 0; i < n; ++i){
+                    for(std::size_t j = 0; j < n; ++j){
+                        if(j == i){
+                            D(i,j) = A(i,j);
+                        }
+                        else {
+                            D(i,j) = 0;
+                        }
+                    }
+                }
+
+                for(std::size_t i = 0; i < n; ++i){
+                    for(std::size_t j = 0; j < n; ++j){
+                        if(i < j){
+                            U(i,j) = A(i,j);
+                        }
+                        else{
+                            U(i,j) = 0;
+                        }
+                    }
+                }
+
 
                 M = (D + L) * inv(D) * (D + U);
             }
 
             if (type.compare("SOR preconditioning")==0){
                 double omega = 1.2;  // omega is in the range of (0,2) to make sure converge
-                auto D = invert<asDiagonal>(A);
-                auto L = invert<asLower>(A);
+                std::size_t n = A.columns();
+                MatrixType L(n,n), D(n,n);
+                for(std::size_t i = 0; i < n; ++i){
+                    for(std::size_t j = 0; j < n; ++j){
+                        if(j < i){
+                            L(i,j) = A(i,j);
+                        }
+                        else{
+                            L(i,j) = 0;
+                        }
+                    }
+                }
+
+                for(std::size_t i = 0; i < n; ++i){
+                    for(std::size_t j = 0; j < n; ++j){
+                        if(j == i){
+                            D(i,j) = A(i,j);
+                        }
+                        else {
+                            D(i,j) = 0;
+                        }
+                    }
+                }
 
                 M = (D + omega * L)/omega;
             }
 
             if (type.compare("SSOR preconditioning")==0){
-                auto D = invert<asDiagonal>(A);
-                auto L = invert<asLower>(A);
+                std::size_t n = A.columns();
+                MatrixType L(n,n), D(n,n);
+                for(std::size_t i = 0; i < n; ++i){
+                    for(std::size_t j = 0; j < n; ++j){
+                        if(j < i){
+                            L(i,j) = A(i,j);
+                        }
+                        else{
+                            L(i,j) = 0;
+                        }
+                    }
+                }
+
+                for(std::size_t i = 0; i < n; ++i){
+                    for(std::size_t j = 0; j < n; ++j){
+                        if(j == i){
+                            D(i,j) = A(i,j);
+                        }
+                        else {
+                            D(i,j) = 0;
+                        }
+                    }
+                }
 
                 M = (D + L) * inv(D) * trans(D + L);
             }
 
 
             if (type.compare("incomplete Cholesky factorization") == 0 || type.compare("") == 0){
-                auto row_A = row(A, 0);
-                std::size_t n = row_A.size();
-                MatrixType B = A;
+                // The Cholesky factorization of A is A = LL*, where L is a lower triangular matrix.
+                // Incomplete Cholesky factorization precondition is M =KK*, where a sparse lower triangular matrix K is close to L.
+                // Finding the exact Cholesky decomposition, except that any entry is set to zero
+                // if the corresponding entry in A is also zero.
 
-                for(std::size_t k = 0; k < n; ++k){
-                    B(k,k) = sqrt(B(k,k));
+                MatrixType L, K;
+                llh( A, L );  // L* LH decomposition of a row-major matrix
+                K = L;
 
-                    for(std::size_t i = k+1; i < n; ++i){
-                        if(B(i,k) != 0)
-                            B(i,k) = B(i,k)/B(k,k);
-                    }
-
-                    for(std::size_t j = k+1; j < n; ++j){
-                        for(std::size_t i = j; i < n; ++i){
-                            if (B(i,j) != 0)
-                                B(i,j) = B(i,j) - B(i,k) * B(j,k);
-                        }
-                    }
-                }
-
+                std::size_t n = A.columns();
                 for(std::size_t i = 0; i < n; ++i){
-                    for(std::size_t j = i+1; j < n; ++j){
-                        B(i,j) = 0;
+                    for(std::size_t j = 0; j < n; ++j){
+                        if (A(i, j) == 0)
+                            K(i, j) = 0;
                     }
                 }
 
-                M = B;
+                M = K * trans(K);
 
             }
-
 
         }
 
@@ -103,7 +198,7 @@ ITERATIVE_NAMESPACE_OPEN
             BLAZE_INTERNAL_ASSERT(A.isSymmetric(), "A must be a symmetric matrix")
 
             MatrixType M;
-            preconditioner_matrix<MatrixType>(Preconditioner,A,M);
+            preconditioner_matrix<MatrixType, T>(Preconditioner,A,M);
 
             auto Minv = inv(M);
 
