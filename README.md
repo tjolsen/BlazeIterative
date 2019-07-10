@@ -10,12 +10,12 @@ Currently implemented algorithms:
 - Conjugate Gradient (CG)
 - BiCGSTAB
 - Preconditioned BiCGSTAB
+- Arnoldi
 
 Planned algorithms:
 - Preconditioned CG
 - (Preconditioned) BiCGSTAB(l)
 - GMRES
-- Arnoldi
 - Lanczos
 
 Potential algorithms (if sufficient interest):

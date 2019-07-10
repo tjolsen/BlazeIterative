@@ -18,6 +18,7 @@ int main() {
     // Test for BiCGSTAB
     // Test for PreconditionBiCGSTAB
     // Test for PreconditionCG
+
    std::size_t N = 1000;
    DynamicMatrix<double,columnMajor> A(N,N, 0.0);
    DynamicVector<double> b(N, 0.0);
@@ -26,7 +27,6 @@ int main() {
        A(i,i) = 2.0;
        b[i] = 1.0*(1+i);
    }
-
 
    //ConjugateGradientTag tag;
    //BiCGSTABTag tag;
