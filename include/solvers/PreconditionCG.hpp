@@ -4,6 +4,7 @@
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
+
 #ifndef BLAZE_ITERATIVE_PRECONDITIONCG_HPP
 #define BLAZE_ITERATIVE_PRECONDITIONCG_HPP
 
@@ -19,85 +20,38 @@ ITERATIVE_NAMESPACE_OPEN
         void preconditioner_matrix(std::string type, const MatrixType &A, MatrixType &M){
 
             if (type.compare("Jacobi preconditioning")==0){
-                // M = D
-                std::size_t n = A.columns();
-                MatrixType D(n,n);
-                for(std::size_t i = 0; i < n; ++i){
-                    for(std::size_t j = 0; j < n; ++j){
-                        if(j == i){
-                            D(i,j) = A(i,j);
-                        }
-                        else {
-                            D(i,j) = 0;
-                        }
-                    }
-                }
+
+                DiagonalMatrix<MatrixType> D(A.columns());
+                band<0L>(D) = band<0L>(A);
                 M = D;
             }
 
             if (type.compare("Gauss Seidel preconditioning")==0){
-                std::size_t n = A.columns();
-                MatrixType L(n,n), D(n,n);
-                for(std::size_t i = 0; i < n; ++i){
-                    for(std::size_t j = 0; j < n; ++j){
-                        if(j < i){
-                            L(i,j) = A(i,j);
-                        }
-                        else{
-                            L(i,j) = 0;
-                        }
-                    }
-                }
+                DiagonalMatrix<MatrixType> D(A.columns());
+                StrictlyLowerMatrix<MatrixType> L(A.columns());
 
-                for(std::size_t i = 0; i < n; ++i){
-                    for(std::size_t j = 0; j < n; ++j){
-                        if(j == i){
-                            D(i,j) = A(i,j);
-                        }
-                        else {
-                            D(i,j) = 0;
-                        }
-                    }
+                for(std::size_t i = 1 - A.columns(); i < 0; ++i){
+                    band(L, i) = band(A, i);
                 }
+                band<0L>(D) = band<0L>(A);
 
-                M = L + D; // M = L + D
+                M = L + D;
             }
 
             if (type.compare("Symmetric Gauss Seidel preconditioning")==0){
 
-                std::size_t n = A.columns();
-                MatrixType L(n,n), D(n,n), U(n,n);
-                for(std::size_t i = 0; i < n; ++i){
-                    for(std::size_t j = 0; j < n; ++j){
-                        if(j < i){
-                            L(i,j) = A(i,j);
-                        }
-                        else{
-                            L(i,j) = 0;
-                        }
-                    }
+                StrictlyLowerMatrix<MatrixType> L(A.columns());
+                DiagonalMatrix<MatrixType> D(A.columns());
+                StrictlyUpperMatrix<MatrixType> U(A.columns());
+
+                for(std::size_t i = 1 - A.columns(); i < 0; ++i){
+                    band(L, i) = band(A, i);
                 }
 
-                for(std::size_t i = 0; i < n; ++i){
-                    for(std::size_t j = 0; j < n; ++j){
-                        if(j == i){
-                            D(i,j) = A(i,j);
-                        }
-                        else {
-                            D(i,j) = 0;
-                        }
-                    }
-                }
+                band<0L>(D) = band<0L>(A);
 
-                for(std::size_t i = 0; i < n; ++i){
-                    for(std::size_t j = 0; j < n; ++j){
-                        if(i < j){
-                            U(i,j) = A(i,j);
-                        }
-                        else{
-                            U(i,j) = 0;
-                        }
-                    }
+                for(std::size_t i = 1; i < A.columns(); ++i){
+                    band(U, i) = band(A, i);
                 }
 
 
@@ -106,57 +60,25 @@ ITERATIVE_NAMESPACE_OPEN
 
             if (type.compare("SOR preconditioning")==0){
                 double omega = 1.2;  // omega is in the range of (0,2) to make sure converge
-                std::size_t n = A.columns();
-                MatrixType L(n,n), D(n,n);
-                for(std::size_t i = 0; i < n; ++i){
-                    for(std::size_t j = 0; j < n; ++j){
-                        if(j < i){
-                            L(i,j) = A(i,j);
-                        }
-                        else{
-                            L(i,j) = 0;
-                        }
-                    }
+                StrictlyLowerMatrix<MatrixType> L(A.columns());
+                DiagonalMatrix<MatrixType> D(A.columns());
+                for(std::size_t i = 1 - A.columns(); i < 0; ++i){
+                    band(L, i) = band(A, i);
                 }
 
-                for(std::size_t i = 0; i < n; ++i){
-                    for(std::size_t j = 0; j < n; ++j){
-                        if(j == i){
-                            D(i,j) = A(i,j);
-                        }
-                        else {
-                            D(i,j) = 0;
-                        }
-                    }
-                }
+                band<0L>(D) = band<0L>(A);
 
                 M = (D + omega * L)/omega;
             }
 
             if (type.compare("SSOR preconditioning")==0){
-                std::size_t n = A.columns();
-                MatrixType L(n,n), D(n,n);
-                for(std::size_t i = 0; i < n; ++i){
-                    for(std::size_t j = 0; j < n; ++j){
-                        if(j < i){
-                            L(i,j) = A(i,j);
-                        }
-                        else{
-                            L(i,j) = 0;
-                        }
-                    }
+                StrictlyLowerMatrix<MatrixType> L(A.columns());
+                DiagonalMatrix<MatrixType> D(A.columns());
+                for(std::size_t i = 1 - A.columns(); i < 0; ++i){
+                    band(L, i) = band(A, i);
                 }
 
-                for(std::size_t i = 0; i < n; ++i){
-                    for(std::size_t j = 0; j < n; ++j){
-                        if(j == i){
-                            D(i,j) = A(i,j);
-                        }
-                        else {
-                            D(i,j) = 0;
-                        }
-                    }
-                }
+                band<0L>(D) = band<0L>(A);
 
                 M = (D + L) * inv(D) * trans(D + L);
             }
@@ -164,8 +86,8 @@ ITERATIVE_NAMESPACE_OPEN
 
             if (type.compare("incomplete Cholesky factorization") == 0 || type.compare("") == 0){
                 // The Cholesky factorization of A is A = LL*, where L is a lower triangular matrix.
-                // Incomplete Cholesky factorization precondition is M =KK*, where a sparse lower triangular matrix K is close to L.
-                // Finding the exact Cholesky decomposition, except that any entry is set to zero
+                // Incomplete Cholesky factorization precondition is M = KK*, where K is a sparse lower triangular matrix and is close to L.
+                // Solution is: finding the exact Cholesky decomposition, except that any entry is set to zero
                 // if the corresponding entry in A is also zero.
 
                 MatrixType L, K;
@@ -209,7 +131,6 @@ ITERATIVE_NAMESPACE_OPEN
 
             auto absolute_residual_0 = trans(r) * r;
             auto absolute_residual = absolute_residual_0;
-            //auto absolute_residual_prev = absolute_residual;
 
             if(tag.do_log()) {
                 tag.log_residual(absolute_residual/absolute_residual_0);
@@ -218,7 +139,6 @@ ITERATIVE_NAMESPACE_OPEN
 
             std::size_t iteration{0};
             while(true) {
-                //absolute_residual_prev = absolute_residual;
                 Ap = declsym(A)*p;
 
                 auto alpha = trans(r) * z/(trans(p) * Ap);
