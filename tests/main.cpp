@@ -41,7 +41,7 @@ int main() {
 
     PreconditionCGTag tag;
     tag.do_log() = true;
-    std::cout << solve(A,b,tag, "SSOR preconditioning") << std::endl << std::endl;
+    std::cout << solve(A,b,tag, "incomplete Cholesky factorization") << std::endl << std::endl;
 
    int iter(0);
    for(auto r : tag.convergence_history()) {
