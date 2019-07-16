@@ -13,20 +13,46 @@ using namespace blaze::iterative;
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
+template< typename MT, bool SO>
+void copyStrictlyLowerPart( DynamicMatrix<MT,SO>& src, DynamicMatrix<MT,SO>& dst )
+
+{
+
+    decltype(auto) target( derestrict( ~dst ) );
+
+
+
+    for( size_t i=1UL; i<(~src).rows(); ++i ) {
+
+        for( size_t j=0UL; j<i; ++j ) {
+
+            (~target)(i,j) = (~src)(i,j);
+
+        }
+
+    }
+
+}
+
 int main() {
     // Test for ConjugateGradient
     // Test for BiCGSTAB
     // Test for PreconditionBiCGSTAB
     // Test for PreconditionCG
 
-   std::size_t N = 1000;
-   DynamicMatrix<double,columnMajor> A(N,N, 0.0);
-   DynamicVector<double> b(N, 0.0);
+    std::size_t N = 1000;
+    DynamicMatrix<double,false> A(N,N, 0.0);
+    DynamicVector<double> b(N, 0.0);
+    for(int i=0; i<N; ++i) {
+        A(i,i) = 2.0;
+        b[i] = 1.0*(1+i);
+    }
 
-   for(int i=0; i<N; ++i) {
-       A(i,i) = 2.0;
-       b[i] = 1.0*(1+i);
-   }
+/*
+    DynamicMatrix<double,false> L(N,N,0.0);
+    //copyStrictlyLowerPart<double, false>(A, L);
+    std::cout << L << std::endl;
+*/
 
    //ConjugateGradientTag tag;
    //BiCGSTABTag tag;
@@ -38,6 +64,7 @@ int main() {
     tag.do_log() = true;
     std::cout << solve(A,b,tag, "Cholesky") << std::endl << std::endl;
    */
+
 
     PreconditionCGTag tag;
     tag.do_log() = true;
@@ -82,8 +109,8 @@ int main() {
     auto res = solve(A,b,tag,n);
     //eigen(h,w1,V1);
     std::cout << "The Matrix h is: " <<std::endl << res.second << std::endl;
+ */
 
-    */
 
     return 0;
 }

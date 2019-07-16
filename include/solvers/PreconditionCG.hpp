@@ -14,6 +14,30 @@ BLAZE_NAMESPACE_OPEN
 ITERATIVE_NAMESPACE_OPEN
 
     namespace detail {
+
+        template< typename MatrixType>
+        void copyStrictlyLowerPart( const MatrixType& src, MatrixType& dst )
+
+        {
+
+            decltype(auto) target( derestrict( ~dst ) );
+            assert(dst.rows() == target.rows());
+            assert(dst.columns() == target.columns());
+
+
+
+            for( size_t i=1UL; i<(~src).rows(); ++i ) {
+
+                for( size_t j=0UL; j<i; ++j ) {
+
+                    (~target)(i,j) = (~src)(i,j);
+
+                }
+
+            }
+
+        }
+
         // Decompose A as A = L + D + U, where L is strictly lower triangular matrix, D is diagonal matrix, and U is
         // strictly upper triangular matrix.
         template<typename MatrixType, typename T>
@@ -27,12 +51,9 @@ ITERATIVE_NAMESPACE_OPEN
             }
 
             if (type.compare("Gauss Seidel preconditioning")==0){
+                MatrixType L(A.rows(),A.columns());
                 DiagonalMatrix<MatrixType> D(A.columns());
-                StrictlyLowerMatrix<MatrixType> L(A.columns());
-
-                for(std::size_t i = 1 - A.columns(); i < 0; ++i){
-                    band(L, i) = band(A, i);
-                }
+                copyStrictlyLowerPart<MatrixType>(A, L);
                 band<0L>(D) = band<0L>(A);
 
                 M = L + D;
@@ -40,44 +61,28 @@ ITERATIVE_NAMESPACE_OPEN
 
             if (type.compare("Symmetric Gauss Seidel preconditioning")==0){
 
-                StrictlyLowerMatrix<MatrixType> L(A.columns());
+                MatrixType L(A.rows(),A.columns());
+                copyStrictlyLowerPart<MatrixType>(A, L);
+
                 DiagonalMatrix<MatrixType> D(A.columns());
-                StrictlyUpperMatrix<MatrixType> U(A.columns());
-
-                for(std::size_t i = 1 - A.columns(); i < 0; ++i){
-                    band(L, i) = band(A, i);
-                }
-
                 band<0L>(D) = band<0L>(A);
 
-                for(std::size_t i = 1; i < A.columns(); ++i){
-                    band(U, i) = band(A, i);
-                }
-
-
-                M = (D + L) * inv(D) * (D + U);
+                M = (D + L) * inv(D) * (D + trans(L));
             }
 
             if (type.compare("SOR preconditioning")==0){
                 double omega = 1.2;  // omega is in the range of (0,2) to make sure converge
-                StrictlyLowerMatrix<MatrixType> L(A.columns());
                 DiagonalMatrix<MatrixType> D(A.columns());
-                for(std::size_t i = 1 - A.columns(); i < 0; ++i){
-                    band(L, i) = band(A, i);
-                }
-
+                MatrixType L(A.rows(),A.columns());
                 band<0L>(D) = band<0L>(A);
-
+                copyStrictlyLowerPart<MatrixType>(A, L);
                 M = (D + omega * L)/omega;
             }
 
             if (type.compare("SSOR preconditioning")==0){
-                StrictlyLowerMatrix<MatrixType> L(A.columns());
                 DiagonalMatrix<MatrixType> D(A.columns());
-                for(std::size_t i = 1 - A.columns(); i < 0; ++i){
-                    band(L, i) = band(A, i);
-                }
-
+                MatrixType L(A.rows(),A.columns());
+                copyStrictlyLowerPart<MatrixType>(A, L);
                 band<0L>(D) = band<0L>(A);
 
                 M = (D + L) * inv(D) * trans(D + L);
@@ -90,7 +95,7 @@ ITERATIVE_NAMESPACE_OPEN
                 // Solution is: finding the exact Cholesky decomposition, except that any entry is set to zero
                 // if the corresponding entry in A is also zero.
 
-                MatrixType L, K;
+                MatrixType L(A.rows(),A.columns()), K(A.rows(),A.columns());
                 llh( A, L );  // L* LH decomposition of a row-major matrix
                 K = map(A, L, [](T aval, T lval) { return aval == T{0} ? T{0} : lval; });
                 M = K * trans(K);
@@ -98,6 +103,9 @@ ITERATIVE_NAMESPACE_OPEN
             }
 
         }
+
+
+
 
         template<typename MatrixType, typename T>
         void solve_impl(
