@@ -25,10 +25,9 @@ ITERATIVE_NAMESPACE_OPEN
             assert(dst.columns() == target.columns());
 
 
+            for(signed long int i=1UL; i<(~src).rows(); ++i ) {
 
-            for( size_t i=1UL; i<(~src).rows(); ++i ) {
-
-                for( size_t j=0UL; j<i; ++j ) {
+                for(signed long int j=0UL; j<i; ++j ) {
 
                     (~target)(i,j) = (~src)(i,j);
 
