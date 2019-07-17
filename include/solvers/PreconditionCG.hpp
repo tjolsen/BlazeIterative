@@ -94,7 +94,7 @@ ITERATIVE_NAMESPACE_OPEN
                 // Solution is: finding the exact Cholesky decomposition, except that any entry is set to zero
                 // if the corresponding entry in A is also zero.
 
-                MatrixType L(A.rows(),A.columns()), K(A.rows(),A.columns());
+                MatrixType L, K;
                 llh( A, L );  // L* LH decomposition of a row-major matrix
                 K = map(A, L, [](T aval, T lval) { return aval == T{0} ? T{0} : lval; });
                 M = K * trans(K);

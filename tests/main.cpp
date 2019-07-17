@@ -13,27 +13,6 @@ using namespace blaze::iterative;
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-template< typename MT, bool SO>
-void copyStrictlyLowerPart( DynamicMatrix<MT,SO>& src, DynamicMatrix<MT,SO>& dst )
-
-{
-
-    decltype(auto) target( derestrict( ~dst ) );
-
-
-
-    for( size_t i=1UL; i<(~src).rows(); ++i ) {
-
-        for( size_t j=0UL; j<i; ++j ) {
-
-            (~target)(i,j) = (~src)(i,j);
-
-        }
-
-    }
-
-}
-
 int main() {
     // Test for ConjugateGradient
     // Test for BiCGSTAB
