@@ -1,24 +1,23 @@
-Blaze-Iterative
+## Blaze-Iterative
 ===============
 
 This is a set of iterative linear system solvers intended for use
-with the Blaze library, a high-performance C++ linear algebra library
-(https://bitbucket.org/blaze-lib/).
+with the [Blaze library](https://bitbucket.org/blaze-lib/blaze/src/master/), a high-performance C++ linear algebra library.
 The API is currently based on a tag-dispatch system to choose a particular algorithm.
 
-Currently implemented algorithms:
-- Conjugate Gradient (CG)
-- BiCGSTAB
-- Preconditioned BiCGSTAB
-- Arnoldi
+### Currently implemented algorithms:
+ #### [Conjugate Gradient](https://github.com/STEllAR-GROUP/BlazeIterative/blob/master/docs/Conjugate%20Gradient.md) 
+ #### BiCGSTAB
+ #### Preconditioned BiCGSTAB
+ #### [Arnoldi](https://github.com/STEllAR-GROUP/BlazeIterative/blob/master/docs/Arnoldi.md)
 
-Planned algorithms:
-- Preconditioned CG
-- (Preconditioned) BiCGSTAB(l)
-- GMRES
-- Lanczos
+### Planned algorithms:
+#### [Preconditioned CG](https://github.com/STEllAR-GROUP/BlazeIterative/blob/master/docs/Precondition%20Conjugate%20Gradient.md)
+#### (Preconditioned) BiCGSTAB(l)
+#### [GMRES](https://github.com/STEllAR-GROUP/BlazeIterative/blob/master/docs/GMRES.md)
+#### [Lanczos](https://github.com/STEllAR-GROUP/BlazeIterative/blob/master/docs/Lanczos.md)
 
-Potential algorithms (if sufficient interest):
+### Potential algorithms (if sufficient interest):
 - LSQR
 - LSMR
 
