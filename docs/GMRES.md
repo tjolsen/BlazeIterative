@@ -58,7 +58,7 @@ Let ![image](https://user-images.githubusercontent.com/29106484/61798057-40a6b68
 
 ![image](https://user-images.githubusercontent.com/29106484/61797929-fde4de80-aded-11e9-96d2-05eb3b95722e.png).
 
-At next step, we premultiply ![image](https://user-images.githubusercontent.com/29106484/61798057-40a6b680-adee-11e9-8a9a-aff7dcd33cd6.png) to the new column ![image](https://user-images.githubusercontent.com/29106484/61755943-6cd71e80-ad7f-11e9-946f-e6cb7bbf13a4.png) and get the rotationed column ![image](https://user-images.githubusercontent.com/29106484/61803849-89fc0380-adf8-11e9-8444-30a7dd2dc376.png). Append the column to previous 
+At next step, we premultiply ![image](https://user-images.githubusercontent.com/29106484/61798057-40a6b680-adee-11e9-8a9a-aff7dcd33cd6.png) to the new column ![image](https://user-images.githubusercontent.com/29106484/61755943-6cd71e80-ad7f-11e9-946f-e6cb7bbf13a4.png) and get the rotationed column ![image](https://user-images.githubusercontent.com/29106484/61803849-89fc0380-adf8-11e9-8444-30a7dd2dc376.png). Append the rotationed column and ![image](https://user-images.githubusercontent.com/29106484/61806552-7e5f0b80-adfd-11e9-958d-230107f12a94.png) to previous 
 ![image](https://user-images.githubusercontent.com/29106484/61801217-02ac9100-adf4-11e9-8b4f-5f818c7b5583.png), we have a almost triangular matrix
 
 ![image](https://user-images.githubusercontent.com/29106484/61803078-26bda180-adf7-11e9-8de0-d606827b5c98.png).
