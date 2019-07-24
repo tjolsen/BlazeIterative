@@ -15,5 +15,8 @@
 #include "PreconditionBiCGSTAB.hpp"
 #include "Arnoldi.hpp"
 #include "ArnoldiTag.hpp"
+#include "PreconditionCG.hpp"
+#include "PreconditionCGTag.hpp"
+
 
 #endif //BLAZE_ITERATIVE_SOLVERS_HPP

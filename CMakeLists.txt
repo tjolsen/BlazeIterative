@@ -35,7 +35,10 @@ set(SOURCE_FILES
   ${CMAKE_CURRENT_SOURCE_DIR}/include/solvers/PreconditionBiCGSTABTag.hpp
   ${CMAKE_CURRENT_SOURCE_DIR}/include/solvers/Arnoldi.hpp
   ${CMAKE_CURRENT_SOURCE_DIR}/include/solvers/ArnoldiTag.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/include/solvers/PreconditionCG.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/include/solvers/PreconditionCGTag.hpp
 )
+
 
 # target_sources not necessary for header-only library, but makes it more
 # IDE-friendly. Need to have it trigger only in "build" mode (not install)

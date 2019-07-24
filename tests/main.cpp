@@ -14,36 +14,48 @@ using namespace blaze::iterative;
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 int main() {
-    /*
-    * // Test for ConjugateGradient
-    * // Test for BiCGSTAB
-    * // Test for PreconditionBiCGSTAB
-   std::size_t N = 1000;
-   DynamicMatrix<double,columnMajor> A(N,N, 0.0);
-   DynamicVector<double> b(N, 0.0);
+    // Test for ConjugateGradient
+    // Test for BiCGSTAB
+    // Test for PreconditionBiCGSTAB
+    // Test for PreconditionCG
 
-   for(int i=0; i<N; ++i) {
-       A(i,i) = 2.0;
-       b[i] = 1.0*(1+i);
-   }
+    std::size_t N = 1000;
+    DynamicMatrix<double,false> A(N,N, 0.0);
+    DynamicVector<double> b(N, 0.0);
+    for(int i=0; i<N; ++i) {
+        A(i,i) = 2.0;
+        b[i] = 1.0*(1+i);
+    }
 
-    *
+/*
+    DynamicMatrix<double,false> L(N,N,0.0);
+    //copyStrictlyLowerPart<double, false>(A, L);
+    std::cout << L << std::endl;
+*/
+
    //ConjugateGradientTag tag;
    //BiCGSTABTag tag;
 
 
    //std::cout << solve(A,b,tag) << std::endl << std::endl;
+/*
+    PreconditionBiCGSTABTag tag;
+    tag.do_log() = true;
+    std::cout << solve(A,b,tag, "Cholesky") << std::endl << std::endl;
+   */
 
-   PreconditionBiCGSTABTag tag;
-   tag.do_log() = true;
-   std::cout << solve(A,b,tag, "Cholesky") << std::endl << std::endl;
+
+    PreconditionCGTag tag;
+    tag.do_log() = true;
+    std::cout << solve(A,b,tag, "incomplete Cholesky factorization") << std::endl << std::endl;
 
    int iter(0);
    for(auto r : tag.convergence_history()) {
        std::cout << iter++ << '\t' << r << '\n';
    }
-   */
 
+
+    /*
     // Test Arnoldi
     std::size_t N = 10;
 
@@ -76,6 +88,7 @@ int main() {
     auto res = solve(A,b,tag,n);
     //eigen(h,w1,V1);
     std::cout << "The Matrix h is: " <<std::endl << res.second << std::endl;
+ */
 
 
     return 0;
