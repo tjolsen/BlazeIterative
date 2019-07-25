@@ -46,32 +46,76 @@ BLAZE_NAMESPACE_OPEN
 
 
                 std::size_t m = A.columns();
-                DynamicMatrix<T> V(m, (n+1));
+                DynamicMatrix<T> V(m, (n+2));
                 DynamicVector<T> alpha(n+1);
-                DynamicVector<T> beta(n+1);
+                DynamicVector<T> beta(n+2);
                 DynamicVector<T> w(m);
                 DynamicVector<T> Av(m);
-                DynamicVector<T> q(m,0);
-            //    DynamicVector<T> r(b);
+                DynamicVector<T> q(m);
+                DynamicVector<T> v(m);
+                DynamicVector<T> r(m);
 
                 beta[0] = 0;
+                beta[1] = 0;
                 alpha[0] = 0;
-                column(V,0) = q;
-                column(V,1) = b / norm(b);
-
-                for(int j = 1; j <=n; ++j ){
-                    Av = A * column(V,j);
-                    alpha[j] = trans(column(V,j)) * Av;
-                    Av -= alpha[j] * column(V,j) - beta[j-1]*column(V,j-1);
-                    beta[j] = norm(Av);
-                    if(beta[j] == 0){
+                column(V, 0) = 0;
+                column(V, 1) = b/norm(b);
+                for(int j = 1; j <=n; ++j){
+                    r = A *column(V, j) - beta[j] *column(V, j-1);
+                    alpha[j] = trans(column(V, j)) * r;
+                    r -= alpha[j] *column(V, j);
+                    beta[j+1] = norm(r);
+                    if (beta[j+1] == 0){
                         break;
-                    } else{
-                        column(V,j+1) = Av / beta[j];
+                    }else{
+                        column(V, j+1) = r / beta[j+1];
                     }
                 }
 
                 Q = submatrix(V, 0UL, 1UL, m, n);
+
+
+//                q = b / norm(b);
+//                column(Q,0) = q;
+//                r = A * q;
+//                alpha[0] = ctrans(q) * r;
+//                r -= alpha[0] * q;
+//                beta[0] = norm(r);
+//
+//                for(int j =1 ; j < n; ++j){
+//                    v = q;
+//                    q = r/beta[j-1];
+//                    column(Q,j) = q;
+//                    r = A * q - beta[j-1]*v;
+//                    alpha[j] = ctrans(q) * r;
+//                    r -= alpha[j] * q;
+//                    beta[j] = norm(r);
+//                    if(beta[j] == 0){
+//                        break;
+//                    }
+//                }
+
+
+
+//                beta[0] = 0;
+//                alpha[0] = 0;
+//                column(V,0) = q;
+//                column(V,1) = b / norm(b);
+//
+//                for(int j = 1; j <=n; ++j ){
+//                    Av = A * column(V,j);
+//                    alpha[j] = trans(column(V,j)) * Av;
+//                    Av -= alpha[j] * column(V,j) - beta[j-1]*column(V,j-1);
+//                    beta[j] = norm(Av);
+//                    if(beta[j] == 0){
+//                        break;
+//                    } else{
+//                        column(V,j+1) = Av / beta[j];
+//                    }
+//                }
+//
+//                Q = submatrix(V, 0UL, 1UL, m, n);
+
 //                int j = 0;
 //                while(beta[j] !=0){
 //                    column(Q,j+1) = r / beta[j];
@@ -107,8 +151,8 @@ BLAZE_NAMESPACE_OPEN
 //                }
 //
 //                auto sub_beta = subvector(beta, 1UL, (n-1) );
-                h = ctrans(Q) * A * Q;
-
+                h = trans(Q) * A * Q;
+                std::cout << "V is: " << V << std::endl;
                 std::cout << "alpha is: " << alpha << std::endl;
                 std::cout << "beta is: " << beta << std::endl;
 
