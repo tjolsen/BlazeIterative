@@ -7,7 +7,6 @@
 #ifndef BLAZE_ITERATIVE_ARNOLDI_HPP
 #define BLAZE_ITERATIVE_ARNOLDI_HPP
 
-#include <utility> // make_pair for returning a pair of values
 #include "IterativeCommon.hpp"
 #include "ArnoldiTag.hpp"
 
@@ -15,13 +14,10 @@
 BLAZE_NAMESPACE_OPEN
     ITERATIVE_NAMESPACE_OPEN
 
-
-
         namespace detail {
 
             template<typename MatrixType, typename T>
             void  solve_impl(
-                    // DynamicVector<T> &x,
                     MatrixType &h,
                     MatrixType &Q,
                     const MatrixType &A,
@@ -80,10 +76,7 @@ BLAZE_NAMESPACE_OPEN
 
                 }
 
-                //return std::make_pair(Q,h);
-
             }; // end solve_imple function
-
 
         } //end namespace detail
 

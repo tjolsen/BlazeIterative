@@ -37,6 +37,8 @@ set(SOURCE_FILES
   ${CMAKE_CURRENT_SOURCE_DIR}/include/solvers/ArnoldiTag.hpp
   ${CMAKE_CURRENT_SOURCE_DIR}/include/solvers/PreconditionCG.hpp
   ${CMAKE_CURRENT_SOURCE_DIR}/include/solvers/PreconditionCGTag.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/include/solvers/Lanczos.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/include/solvers/LanczosTag.hpp
 )
 
 
