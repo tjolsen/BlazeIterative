@@ -97,13 +97,8 @@ int main() {
     auto res = solve(A,b,tag,n);
     eigen(res.second,w1,V1);
     std::cout << "The eigenvalues of Matrix h is: "  <<std::endl << w1 << std::endl;
-
+    std::cout << "The Matrix Q*Q is: "  <<std::endl << trans(res.first)* res.first<< std::endl;
     std::cout << "The Matrix h is: "  <<std::endl << res.second << std::endl;
-    auto VAV = ctrans(res.first)*A*(res.first);
-    std::cout << "The Matrix VTV* is: "  <<std::endl <<  VAV << std::endl;
-
-    std::cout << VAV(0,5);
-
 
     return 0;
 }

@@ -165,7 +165,7 @@ DynamicVector<T> solve(const MatrixType &A,
 
             return std::make_pair(Q,h);
         } else if(typeid(tag) == typeid(LanczosTag)) {
-            MatrixType Q(A.columns(), n);
+            MatrixType Q(A.columns() , n);
             MatrixType h(n, n, 0.0);
             solve_inplace(h,Q,A, b, tag, n);
 
