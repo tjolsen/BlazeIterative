@@ -46,31 +46,32 @@ BLAZE_NAMESPACE_OPEN
                 std::size_t m = A.columns();
                 DynamicVector<T> alpha(n);
                 DynamicVector<T> beta(n);
-                DynamicMatrix<T> w(m,n);
-                DynamicMatrix<T> Av(m,n);
+                DynamicVector<T> w(m);
+                DynamicVector<T> Av(m);
 
                 // Let q1 be an arbitrary vector with Euclidean norm 1
                 column(Q, 0) = b / norm(b);
 
                 // Abbreviated initial iteration step:
                 beta[0] = 0;
-                column(Av, 0) = declsym(A) * column(Q, 0);
-                alpha[0] = ctrans(column(Av, 0)) * column(Q, 0);
-                column(w, 0) = column(Av, 0) - alpha[0] * column(Q, 0);
+                Av = declsym(A) * column(Q, 0);
+                alpha[0] = ctrans(Av) * column(Q, 0);
+                w = Av - alpha[0] * column(Q, 0);
 
 
-                // for j = 1, ... m-1 do:
-                for( int j = 1; j < m; ++j){
-                    beta[j] = norm(column(w, j));
+                // for j = 1, ... n-1 do:
+                for( int j = 1; j < n; ++j){
+                    beta[j] = norm(w);
                     if (beta[j] != 0){
-                        column(Q, j) = column(w, j) / beta[j];
+                        column(Q, j) = w / beta[j];
                     } else{
                         break;
                     }
-                    column(Av, j) = declsym(A) * column(Q, j);
-                    alpha[j] = ctrans(column(Av, j)) * column(Q, j);
-                    column(w, j) = column(Av, j) - alpha[j] * column(Q, j) - beta[j] * column(Q, j-1);
+                    Av = declsym(A) * column(Q, j);
+                    alpha[j] = ctrans(Av) * column(Q, j);
+                    w = Av - alpha[j] * column(Q, j) - beta[j] * column(Q, j-1);
                 }
+
                 auto sub_beta = subvector(beta, 1UL, (n-1) );
                 band<0>(h) = alpha;
                 band<-1>(h) = sub_beta;

@@ -1,3 +1,4 @@
+
 //
 // Created by tyler on 6/24/17.
 //
@@ -33,11 +34,11 @@ int main() {
     std::cout << L << std::endl;
 */
 
-   //ConjugateGradientTag tag;
-   //BiCGSTABTag tag;
+    //ConjugateGradientTag tag;
+    //BiCGSTABTag tag;
 
 
-   //std::cout << solve(A,b,tag) << std::endl << std::endl;
+    //std::cout << solve(A,b,tag) << std::endl << std::endl;
 /*
     PreconditionBiCGSTABTag tag;
     tag.do_log() = true;
@@ -70,16 +71,16 @@ int main() {
     A(0,0) = 2.0;
     A(9,8) = -1.0;
     A(9,9) = 2.0;
-    std::cout<< "The Matrix A is: " << std::endl << A << std::endl;
+   // std::cout<< "The Matrix A is: " << std::endl << A << std::endl;
 
-   DynamicVector<double> b(N, 1.0);
+    DynamicVector<double> b(N, 1.0);
     DynamicVector<complex<double>,columnVector> w(N); // The vector for the real eigenvalues
     DynamicMatrix<complex<double>,rowMajor> V(N,N); // The matrix for the left eigenvectors
     eigen(A,w,V);
     std::cout<< "The eigenvalues of Matrix A is: " << std::endl << w << std::endl;
     //std::cout << "The eigenvectors of Matrix A is: " << V << std::endl;
 
-    std::size_t n = N-1;
+    std::size_t n = N;
 //    ArnoldiTag tag;
 //    auto res = solve(A,b,tag,n);
 //    //eigen(h,w1,V1);
@@ -89,9 +90,10 @@ int main() {
     DynamicMatrix<complex<double>,rowMajor> V1(n,n); // The matrix for the left eigenvectors
     LanczosTag tag;
     auto res = solve(A,b,tag,n);
-    std::cout << "The Matrix h is: "  <<std::endl << res.second << std::endl;
     eigen(res.second,w1,V1);
     std::cout << "The eigenvalues of Matrix h is: "  <<std::endl << w1 << std::endl;
+
+//    std::cout << "The Matrix VTV* is: "  <<std::endl <<  (res.first)*(res.second)*ctrans(res.first)<< std::endl;
 
 
     return 0;
