@@ -161,13 +161,14 @@ DynamicVector<T> solve(const MatrixType &A,
         if(typeid(tag) == typeid(ArnoldiTag)){
             MatrixType Q(b.size(), (n + 1));
             MatrixType h((n + 1), n);
-            solve_inplace(h,Q,A, b, tag, n);
+            solve_inplace(h, Q, A, b, tag, n);
 
             return std::make_pair(Q,h);
+
         } else if(typeid(tag) == typeid(LanczosTag)) {
             MatrixType Q(A.columns() , n);
             MatrixType h(n, n, 0.0);
-            solve_inplace(h,Q,A, b, tag, n);
+            solve_inplace(h, Q,A , b, tag, n);
 
             return std::make_pair(Q,h);
         }

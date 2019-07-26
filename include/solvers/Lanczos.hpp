@@ -47,55 +47,75 @@ BLAZE_NAMESPACE_OPEN
 
                 std::size_t m = A.columns();
                 DynamicMatrix<T> V(m, (n+2));
-                DynamicVector<T> alpha(n+1);
-                DynamicVector<T> beta(n+2);
+                DynamicVector<T> alpha(n);
+                DynamicVector<T> beta(n);
                 DynamicVector<T> w(m);
                 DynamicVector<T> Av(m);
                 DynamicVector<T> q(m);
                 DynamicVector<T> v(m);
                 DynamicVector<T> r(m);
 
-                beta[0] = 0;
-                beta[1] = 0;
-                alpha[0] = 0;
-                column(V, 0) = 0;
-                column(V, 1) = b/norm(b);
-                for(int j = 1; j <=n; ++j){
-                    r = A *column(V, j) - beta[j] *column(V, j-1);
-                    alpha[j] = trans(column(V, j)) * r;
-                    r -= alpha[j] *column(V, j);
-                    beta[j+1] = norm(r);
-                    if (beta[j+1] == 0){
+//                // version 0
+//                // http://qubit-ulm.com/wp-content/uploads/2012/04/Lanczos_Algebra.pdf
+//
+//                beta[0] = norm(b);
+//                column(V, 0) = 0;
+//                alpha[0] = 0;
+//                int j = 0;
+//                while(beta[j] != 0 && j <= n){
+//                    column(V, j+1) = b / beta[j];
+//                    j++;
+//                    alpha[j] = trans(column(V, j)) * A * column(V, j);
+//                    Av = A * column(V, j) - alpha[j] * column(V, j) - beta[j-1] * column(V, j-1);
+//                    beta[j] = norm(Av);
+//                }
+//                Q = submatrix(V, 0UL, 1UL, m, n);
+
+
+//            // version 1
+//            // https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=5763440
+//                beta[0] = 0;
+//                beta[1] = 0;
+//                alpha[0] = 0;
+//                column(V, 0) = 0;
+//                column(V, 1) = b / norm(b);
+//                for(int j = 1; j <=n; ++j){
+//                    Av = A *column(V, j) - beta[j] *column(V, (j-1));
+//                    alpha[j] = trans(Av) * column(V, j);
+//                    Av -= alpha[j] * column(V, j);
+//                    beta[j+1] = norm(Av);
+//                    if (beta[j+1] == 0){
+//                        break;
+//                    }else{
+//                        column(V, j+1) = Av / beta[j+1];
+//                    }
+//                }
+//
+//                Q = submatrix(V, 0UL, 1UL, m, n);
+
+             // version 2
+             // with an example of a diagonal matrix A
+             // http://people.inf.ethz.ch/arbenz/ewp/Lnotes/chapter10.pdf
+
+                column(Q,0) = b / norm(b);
+                Av = A * column(Q,0);
+                alpha[0] = trans(column(Q,0)) * Av;
+                Av -= alpha[0] * column(Q,0);
+                beta[0] = norm(Av);
+
+                for(int j =1 ; j < n; ++j){
+                    column(Q,j) = Av / beta[j-1];
+                    Av = A * column(Q,j) - beta[j-1] * column(Q,j-1);
+                    alpha[j] = trans(column(Q,j)) * Av;
+                    Av -= alpha[j] * column(Q,j);
+                    beta[j] = norm(Av);
+                    if(beta[j] == 0){
                         break;
-                    }else{
-                        column(V, j+1) = r / beta[j+1];
                     }
                 }
 
-                Q = submatrix(V, 0UL, 1UL, m, n);
 
-
-//                q = b / norm(b);
-//                column(Q,0) = q;
-//                r = A * q;
-//                alpha[0] = ctrans(q) * r;
-//                r -= alpha[0] * q;
-//                beta[0] = norm(r);
-//
-//                for(int j =1 ; j < n; ++j){
-//                    v = q;
-//                    q = r/beta[j-1];
-//                    column(Q,j) = q;
-//                    r = A * q - beta[j-1]*v;
-//                    alpha[j] = ctrans(q) * r;
-//                    r -= alpha[j] * q;
-//                    beta[j] = norm(r);
-//                    if(beta[j] == 0){
-//                        break;
-//                    }
-//                }
-
-
+            // version 3
 
 //                beta[0] = 0;
 //                alpha[0] = 0;
@@ -126,7 +146,7 @@ BLAZE_NAMESPACE_OPEN
 //                }
 
 
-
+//                  // version 4
 //                // Let q1 be an arbitrary vector with Euclidean norm 1
 //                column(Q, 0) = b / norm(b);
 //
@@ -149,12 +169,13 @@ BLAZE_NAMESPACE_OPEN
 //                    alpha[j] = ctrans(Av) * column(Q, j);
 //                    w = Av - alpha[j] * column(Q, j) - beta[j] * column(Q, j-1);
 //                }
-//
-//                auto sub_beta = subvector(beta, 1UL, (n-1) );
-                h = trans(Q) * A * Q;
-                std::cout << "V is: " << V << std::endl;
-                std::cout << "alpha is: " << alpha << std::endl;
-                std::cout << "beta is: " << beta << std::endl;
+
+             //   auto sub_beta = subvector(beta, 1UL, (n-1) );
+                h = ctrans(Q) * A * Q;
+             //   std::cout << "V is: " << V << std::endl;
+                std::cout << "Matrix h is: " << std::endl << h << std::endl;
+                std::cout << "alpha is: " << std::endl << alpha << std::endl;
+                std::cout << "beta is: " << std::endl << beta << std::endl;
 
             }; // end solve_imple function
 
