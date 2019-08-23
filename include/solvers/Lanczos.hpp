@@ -109,6 +109,8 @@ BLAZE_NAMESPACE_OPEN
                     Av = A * column(Q,j) - beta[j-1] * column(Q,j-1);
                     alpha[j] = trans(column(Q,j)) * Av;
                     Av -= alpha[j] * column(Q,j);
+                    auto Q_1 = submatrix(Q, 0, 0, m, j+1);
+                    Av -= Q_1 * (trans(Q_1) * Av);
                     beta[j] = norm(Av);
                     if(beta[j] == 0){
                         break;
