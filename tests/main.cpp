@@ -75,7 +75,7 @@ int main() {
 //    A(9,9) = 2.0;
    // std::cout<< "The Matrix A is: " << std::endl << A << std::endl;
 
-    DynamicVector<double> b(N, 1.0);
+    DynamicVector<double> b(N, 1);
     DynamicVector<complex<double>,columnVector> w(N); // The vector for the real eigenvalues
     DynamicMatrix<complex<double>,rowMajor> V(N,N); // The matrix for the left eigenvectors
     eigen(A,w,V);
@@ -89,14 +89,14 @@ int main() {
     auto res1 = solve(A,b,tag1,n);
     auto sub_h = submatrix( res1.second, 0UL, 0UL, (res1.second.rows()-1), res1.second.columns());
     eigen(sub_h,w2,V2);
-    std::cout << "The eigenvalues of Matrix h is: " <<std::endl << w2 << std::endl;
+    std::cout << "Arnoldi: The eigenvalues of Matrix h is: " <<std::endl << w2 << std::endl;
 
     DynamicVector<complex<double>,columnVector> w1(n); // The vector for the real eigenvalues
     DynamicMatrix<complex<double>,rowMajor> V1(n,n); // The matrix for the left eigenvectors
     LanczosTag tag;
     auto res = solve(A,b,tag,n);
     eigen(res.second,w1,V1);
-    std::cout << "The eigenvalues of Matrix h is: "  <<std::endl << w1 << std::endl;
+    std::cout << "Lanczos: The eigenvalues of Matrix h is: "  <<std::endl << w1 << std::endl;
     std::cout << "The Matrix Q*Q is: "  <<std::endl << trans(res.first)* res.first<< std::endl;
    // std::cout << "The Matrix h is: "  <<std::endl << res.second << std::endl;
 

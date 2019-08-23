@@ -46,9 +46,10 @@ BLAZE_NAMESPACE_OPEN
 
 
                 std::size_t m = A.columns();
-                DynamicMatrix<T> V(m, (n+2));
+                DynamicMatrix<T> V(m, (n+1));
                 DynamicVector<T> alpha(n);
                 DynamicVector<T> beta(n);
+              //  DynamicVector<T> beta_1(n-1);
                 DynamicVector<T> w(m);
                 DynamicVector<T> Av(m);
                 DynamicVector<T> q(m);
@@ -115,6 +116,25 @@ BLAZE_NAMESPACE_OPEN
                 }
 
 
+            // verrsion 2-1
+            //  https://www-users.cs.umn.edu/~saad/eig_book_2ndEd.pdf
+
+//                beta[0] = 0;
+//                column(V,0) = 0;
+//                column(V,1) = b / norm(b);
+//
+//                for(int j = 1; j < n; ++j){
+//                    Av = A * column(V,j) - beta[j-1] * column(V,j-1);
+//                    alpha[j-1] = trans(Av) * column(V,j);
+//                    Av -= alpha[j-1] * column(V,j);
+//                    beta[j] = norm(Av);
+//                    column(V,j+1) = Av / beta[j];
+//                }
+//
+//                Q = submatrix(V, 0UL, 1UL, m, n);
+
+
+
             // version 3
 
 //                beta[0] = 0;
@@ -171,7 +191,12 @@ BLAZE_NAMESPACE_OPEN
 //                }
 
              //   auto sub_beta = subvector(beta, 1UL, (n-1) );
-                h = ctrans(Q) * A * Q;
+               // h = ctrans(Q) * A * Q;
+                auto beta_1 = subvector(beta, 0, n-1);
+                band<0>(h) = alpha;
+                band<1>(h) = beta_1;
+                band<-1>(h) = beta_1;
+
              //   std::cout << "V is: " << V << std::endl;
                 std::cout << "Matrix h is: " << std::endl << h << std::endl;
                 std::cout << "alpha is: " << std::endl << alpha << std::endl;
