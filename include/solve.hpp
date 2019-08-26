@@ -64,6 +64,7 @@ void solve_inplace(DynamicVector<T> &x,
 };
 
 // For Arnoldi
+// Lanczos
 // Solve for eigenvalues
     template<typename MatrixType, typename T, typename TagType>
     void solve_inplace(MatrixType &h,
@@ -142,15 +143,28 @@ DynamicVector<T> solve(const MatrixType &A,
     return x;
 };
 
-// For Arnoldi
+
+    // For Arnoldi
+    // For Lanczos
     template<typename MatrixType, typename T, typename TagType>
     std::pair<MatrixType, MatrixType> solve(const MatrixType &A, const DynamicVector<T> &b, TagType &tag,const std::size_t &n)
     {
-        MatrixType Q(b.size(), (n + 1));
-        MatrixType h((n + 1), n);
-        solve_inplace(h,Q,A, b, tag, n);
+        if(typeid(tag) == typeid(ArnoldiTag)){
+            MatrixType Q(b.size(), (n + 1));
+            MatrixType h((n + 1), n);
+            solve_inplace(h, Q, A, b, tag, n);
 
-       return std::make_pair(Q,h);
+            return std::make_pair(Q,h);
+
+        } else if(typeid(tag) == typeid(LanczosTag)) {
+            MatrixType Q(A.columns() , n);
+            MatrixType h(n, n, 0.0);
+            solve_inplace(h, Q,A , b, tag, n);
+
+            return std::make_pair(Q,h);
+        }
+
+
     };
 
 

@@ -17,6 +17,7 @@
 #include "ArnoldiTag.hpp"
 #include "PreconditionCG.hpp"
 #include "PreconditionCGTag.hpp"
-
+#include "LanczosTag.hpp"
+#include "Lanczos.hpp"
 
 #endif //BLAZE_ITERATIVE_SOLVERS_HPP
