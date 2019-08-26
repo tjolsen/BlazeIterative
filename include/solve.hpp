@@ -143,18 +143,9 @@ DynamicVector<T> solve(const MatrixType &A,
     return x;
 };
 
-//// For Arnoldi
-//    template<typename MatrixType, typename T, typename TagType>
-//    std::pair<MatrixType, MatrixType> solve(const MatrixType &A, const DynamicVector<T> &b, TagType &tag,const std::size_t &n)
-//    {
-//        MatrixType Q(b.size(), (n + 1));
-//        MatrixType h((n + 1), n);
-//        solve_inplace(h,Q,A, b, tag, n);
-//
-//       return std::make_pair(Q,h);
-//    };
 
     // For Arnoldi
+    // For Lanczos
     template<typename MatrixType, typename T, typename TagType>
     std::pair<MatrixType, MatrixType> solve(const MatrixType &A, const DynamicVector<T> &b, TagType &tag,const std::size_t &n)
     {
@@ -175,17 +166,6 @@ DynamicVector<T> solve(const MatrixType &A,
 
 
     };
-
-//    // For Lanczos
-//    template<typename MatrixType, typename T, typename TagType>
-//    std::pair<MatrixType, MatrixType> solve(const MatrixType &A, const DynamicVector<T> &b, TagType &tag,const std::size_t &n)
-//    {
-//        MatrixType Q(A.columns(), n);
-//        MatrixType h(n, n, 0.0);
-//        solve_inplace(h,Q, A, tag, n);
-//
-//        return std::make_pair(Q,h);
-//    };
 
 
 ITERATIVE_NAMESPACE_CLOSE
