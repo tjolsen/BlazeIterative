@@ -10,13 +10,14 @@ The API is currently based on a tag-dispatch system to choose a particular algor
  #### BiCGSTAB
  #### Preconditioned BiCGSTAB
  #### [Arnoldi](https://github.com/STEllAR-GROUP/BlazeIterative/blob/master/docs/Arnoldi.md)
+ #### [Lanczos](https://github.com/STEllAR-GROUP/BlazeIterative/blob/master/docs/Lanczos.md)
 
 
 ### Planned algorithms:
 #### [Preconditioned CG](https://github.com/STEllAR-GROUP/BlazeIterative/blob/master/docs/Precondition%20Conjugate%20Gradient.md)
 #### (Preconditioned) BiCGSTAB(l)
 #### [GMRES](https://github.com/STEllAR-GROUP/BlazeIterative/blob/master/docs/GMRES.md)
-#### [Lanczos](https://github.com/STEllAR-GROUP/BlazeIterative/blob/master/docs/Lanczos.md)
+
 
 
 ### Potential algorithms (if sufficient interest):
