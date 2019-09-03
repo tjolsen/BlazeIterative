@@ -19,5 +19,7 @@
 #include "PreconditionCGTag.hpp"
 #include "LanczosTag.hpp"
 #include "Lanczos.hpp"
+#include "GMRES.hpp"
+#include "GMRESTag.hpp"
 
 #endif //BLAZE_ITERATIVE_SOLVERS_HPP
