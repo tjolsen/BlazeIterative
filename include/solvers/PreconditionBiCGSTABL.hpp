@@ -45,7 +45,6 @@ BLAZE_NAMESPACE_OPEN
                 DynamicVector<T> gamma_dot_0(l);
                 DynamicVector<T> gamma_dot_1(l);
                 DynamicVector<T> gamma_dot_2(l);
-                DynamicVector<T> error(r0);
 
                 auto absolute_residual_0 = trans(r0) * r0;
                 auto absolute_residual = absolute_residual_0;
@@ -60,7 +59,10 @@ BLAZE_NAMESPACE_OPEN
 
                 int k = -l;
 
-                while (true) {
+                auto error = 1;
+                double eps = 1e-8;
+
+                while (error > eps ) {
 
                     k += l;
 
@@ -136,16 +138,7 @@ BLAZE_NAMESPACE_OPEN
                     r0 = column(r_hat, 0);
                     x0 = x0_hat;
 
-                    error = r0;
-                    absolute_residual = trans(error)*error;
-                    auto relative_residual = absolute_residual/absolute_residual_0;
-                    if(tag.do_log()) {
-                        tag.log_residual(relative_residual);
-                    }
-
-                    if(tag.terminateIteration(iteration,absolute_residual,relative_residual)) {
-                        break;
-                    }
+                    error = norm(r0);
                 }
             }
 

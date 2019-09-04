@@ -16,7 +16,7 @@ BLAZE_NAMESPACE_OPEN
         class PreconditionBiCGSTABLTag : public IterativeTag
         {
         public:
-            BiCGSTABTag() {
+            PreconditionBiCGSTABLTag() {
                 solverName = "PreconditionBiCGSTABL";
             }
         };
