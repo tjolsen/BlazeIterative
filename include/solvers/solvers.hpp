@@ -21,5 +21,7 @@
 #include "Lanczos.hpp"
 #include "GMRES.hpp"
 #include "GMRESTag.hpp"
+#include "PreconditionBiCGSTABL.hpp"
+#include "PreconditionBiCGSTABLTag.hpp"
 
 #endif //BLAZE_ITERATIVE_SOLVERS_HPP
