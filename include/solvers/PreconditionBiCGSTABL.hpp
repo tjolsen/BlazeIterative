@@ -73,23 +73,19 @@ BLAZE_NAMESPACE_OPEN
                 auto Kinv = inv(K1*K2);
                 auto K1inv = inv(K1 );
 
-                DynamicVector<T> r = b - A * x;
-                DynamicVector<T> p(r);
-                DynamicVector<T> v(r);
-                DynamicVector<T> y(r);
-                DynamicVector<T> r0(r);
-                DynamicVector<T> s(p.size());
-                DynamicVector<T> t(p.size());
-                DynamicVector<T> z(p.size());
+                DynamicVector<T> r0 = b - A * x;
+                DynamicVector<T> r0_tilde(r0);
+
+                DynamicVector<T> u_minus1(r.size());
+
                 DynamicVector<T> error(r);
 
                 auto absolute_residual_0 = trans(r) * r;
                 auto absolute_residual = absolute_residual_0;
 
-                auto rho_prev = T(1);
+                auto rho_0 = T(1);
+                auto alpha = T(0);
                 auto w = T(1);
-                auto alpha = T(1);
-
 
                 std::size_t iteration{0};
                 while (true) {
