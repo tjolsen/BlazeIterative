@@ -17,40 +17,6 @@ BLAZE_NAMESPACE_OPEN
 /**
  *  Implementation of the decompositions provided by blaze
  */
-            template<typename MatrixType, typename T>
-            void decomposition(std::string type, const MatrixType &A, MatrixType &K1, MatrixType &K2){
-
-
-                if (type.compare("Cholesky")==0){
-
-                    MatrixType L;
-                    llh( A, L );  // LLH decomposition of a row-major matrix
-                    K1 = L;
-                    K2 = ctrans(L);
-                }
-
-                if (type.compare("QR")==0){
-
-                    qr( A, K1, K2 );  //QR decomposition of a row-major matrix
-
-                }
-
-                if (type.compare("RQ")==0){
-
-                    rq( A, K1, K2 ); //RQ decomposition of a row-major matrix
-                }
-
-
-                if (type.compare("LU") == 0 || type.compare("") == 0){
-
-                    MatrixType P;
-                    lu( A, K1, K2, P ); // A is a row-major matrix
-                    K2 *= P;
-
-                }
-
-
-            }
 
 /**
  *  Implementation of the Preconditioned BiCGSTABL method
@@ -66,30 +32,22 @@ BLAZE_NAMESPACE_OPEN
                     std::string Preconditioner="")
             {
 
-                // Decomposition A = K1 * K2
-                MatrixType K1;
-                MatrixType K2;
-                decomposition<MatrixType,T>(Preconditioner,A,K1,K2);
-
-                // Compute inverse
-                auto Kinv = inv(K1*K2);
-                auto K1inv = inv(K1 );
 
                 std::size_t m = A.columns();
 
                 DynamicVector<T> r0 = b - A * x;
                 DynamicVector<T> r0_tilde(r0);
 
-                DynamicVector<T> u_minus1(r.size());
+                DynamicVector<T> u_minus1(r0.size());
                 DynamicVector<T> x0(x);
                 DynamicVector<T> x0_hat(x);
                 DynamicVector<T> sigma(l, 1);
                 DynamicVector<T> gamma_dot_0(l);
                 DynamicVector<T> gamma_dot_1(l);
                 DynamicVector<T> gamma_dot_2(l);
-                DynamicVector<T> error(r);
+                DynamicVector<T> error(r0);
 
-                auto absolute_residual_0 = trans(r) * r;
+                auto absolute_residual_0 = trans(r0) * r0;
                 auto absolute_residual = absolute_residual_0;
 
                 auto rho_0 = T(1);
