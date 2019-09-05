@@ -79,7 +79,7 @@ int main() {
     b = {1.788, 1.891, 0.458, 0.818, 1.53};
     BiCGSTABLTag tag;
     tag.do_log() = true;
-    const std::size_t l = 10;
+    const std::size_t l = 1;
     std::cout << solve(A,b,l,tag) << std::endl << std::endl;
 
 //    BiCGSTABTag tag;

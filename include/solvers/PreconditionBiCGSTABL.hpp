@@ -16,9 +16,6 @@ BLAZE_NAMESPACE_OPEN
 
         namespace detail {
 
-/**
- *  Implementation of the decompositions provided by blaze
- */
 
 /**
  *  Implementation of the Preconditioned BiCGSTABL method
@@ -30,15 +27,16 @@ BLAZE_NAMESPACE_OPEN
                     const MatrixType &A,
                     const DynamicVector<T> &b,
                     const std::size_t &l,
-                    PreconditionBiCGSTABLTag &tag
+                    PreconditionBiCGSTABLTag &tag,
+                    std::string Preconditioner=""
                     )
             {
 
 
                 std::size_t m = A.columns();
 
-//                MatrixType M;
-//                preconditioner_matrix<MatrixType, T>(Preconditioner,A,M);
+                MatrixType M;
+                preconditioner_matrix<MatrixType, T>(Preconditioner,A,M);
 
                 DynamicVector<T> r0 = b - A * x;
                 DynamicVector<T> r0_tilde(r0);
