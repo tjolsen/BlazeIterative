@@ -54,7 +54,7 @@ public:
     const std::vector<double> &convergence_history() const { return convergence_history_container; }
 
 protected:
-    std::size_t maximum_iterations{2};
+    std::size_t maximum_iterations{20};
     double relative_residual_tolerance{1.0e-6};
     double absolute_residual_tolerance{0.0};
     std::string solverName{"Default"};
