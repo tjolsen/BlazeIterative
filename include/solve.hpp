@@ -63,6 +63,29 @@ void solve_inplace(DynamicVector<T> &x,
     detail::solve_impl(x, A, b, tag,Preconditioner);
 };
 
+// For PreconditionBiCGSTABL
+    template<typename MatrixType, typename T, typename TagType>
+    void solve_inplace(DynamicVector<T> &x,
+                       const MatrixType &A,
+                       const DynamicVector<T> &b,
+                       const int &l,
+                       TagType &tag,
+                       std::string Preconditioner)
+    {
+        //Compile-time assertions
+        BLAZE_CONSTRAINT_MUST_BE_MATRIX_TYPE(MatrixType);
+        static_assert(std::is_same<T, typename MatrixType::ElementType>::value,
+                      "Matrix and vector data types must be the same");
+
+        //Run-time assertions checking conditions that would be problems later anyway
+        assert(A.columns() == b.size() && "A and b must have consistent dimensions");
+        assert(x.size() == b.size() && "x and b must be the same length");
+        assert(A.rows() == A.columns() && "A must be a square matrix");
+
+        // Call specific solver
+        detail::solve_impl(x, A, b, l, tag,Preconditioner);
+    };
+
 // For Arnoldi
 // Lanczos
 // Solve for eigenvalues
@@ -196,6 +219,20 @@ DynamicVector<T> solve(const MatrixType &A,
     {
         DynamicVector<T> x(b.size(), 0.0);
         solve_inplace(x, A, b, x0, tag, n);
+
+        return x;
+    };
+
+    // For PreconditionBiCGSTABL
+    template<typename MatrixType, typename T, typename TagType>
+    DynamicVector<T> solve(const MatrixType &A,
+                           const DynamicVector<T> &b,
+                           const int &l,
+                           TagType &tag,
+                           std::string Preconditioner)
+    {
+        DynamicVector<T> x(b.size(), 0.0);
+        solve_inplace(x, A, b, l, tag, Preconditioner);
 
         return x;
     };
