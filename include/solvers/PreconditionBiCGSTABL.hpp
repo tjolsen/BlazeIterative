@@ -8,6 +8,7 @@
 #define BLAZE_ITERATIVE_PRECONDITIONBICGSTABL_HPP
 
 #include "PreconditionBiCGSTABLTag.hpp"
+#include "PreconditionCG.hpp"
 
 BLAZE_NAMESPACE_OPEN
     ITERATIVE_NAMESPACE_OPEN
@@ -35,7 +36,10 @@ BLAZE_NAMESPACE_OPEN
 
                 std::size_t m = A.columns();
 
-                DynamicVector<T> r0 = b - A * x;
+                MatrixType M;
+                preconditioner_matrix<MatrixType, T>(Preconditioner,A,M);
+
+                DynamicVector<T> r0 = b - (M * A) * x;
                 DynamicVector<T> r0_tilde(r0);
 
                 DynamicVector<T> u_minus1(r0.size());
