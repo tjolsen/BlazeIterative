@@ -9,6 +9,7 @@
 
 #include "PreconditionBiCGSTABLTag.hpp"
 #include "PreconditionCG.hpp"
+#include <iostream>
 
 BLAZE_NAMESPACE_OPEN
     ITERATIVE_NAMESPACE_OPEN
@@ -28,9 +29,9 @@ BLAZE_NAMESPACE_OPEN
                     DynamicVector<T> &x,
                     const MatrixType &A,
                     const DynamicVector<T> &b,
-                    const int &l,
-                    PreconditionBiCGSTABLTag &tag,
-                    std::string Preconditioner="")
+                    const std::size_t &l,
+                    PreconditionBiCGSTABLTag &tag
+                    )
             {
 
 
@@ -48,14 +49,14 @@ BLAZE_NAMESPACE_OPEN
                 DynamicVector<T> sigma(l);
                 DynamicVector<T> gamma_dot_0(l);
                 DynamicVector<T> gamma_dot_1(l);
-                DynamicVector<T> gamma_dot_2(l);
+                DynamicVector<T> gamma_dot_2(l-1);
 
                 auto absolute_residual_0 = trans(r0) * r0;
                 auto absolute_residual = absolute_residual_0;
 
-                auto rho_0 = T(1);
-                auto alpha = T(0);
-                auto w = T(1);
+                auto rho_0 = 1.0;
+                auto alpha = 0.0;
+                auto w = 1.0;
 
                 DynamicMatrix<T> r_hat(m, l + 1);
                 DynamicMatrix<T> u_hat(m, l + 1);
@@ -68,34 +69,78 @@ BLAZE_NAMESPACE_OPEN
                 while (true) {
 
                     k += l;
+//                    std::cout << "******************************************************************" << std::endl;
+//                    std::cout << "k is: " << k << std::endl;
 
                     column(u_hat, 0) = u0;
                     column(r_hat, 0) = r0;
                     x0_hat = x0;
                     rho_0 = - w * rho_0;
 
+//                    std::cout << "After increasing k, w is: " << w << std::endl;
+//
+//                    std::cout << "After increasing k, rho_0 is: " << rho_0 << std::endl;
+//
+//                    std::cout << "Before Bi-CG part, u_hat_0 is: " << column(u_hat, 0) << std::endl;
+//                    std::cout << "Before Bi-CG part, r_hat_0 is: " << column(r_hat, 0) << std::endl;
+//                    std::cout << "Before Bi-CG part, x0_hat is: " << x0_hat << std::endl;
+
+
                     // Bi-CG part
                     for (int j = 0; j < l; ++j){
                         auto rho_1 = trans(column(r_hat, j)) * r0_tilde;
+//                        std::cout << "In Bi-CG part, when j = " << j <<", rho_0 is: " << rho_0 << std::endl;
+//                        std::cout << "In Bi-CG part, when j = " << j <<", alpha is: " << alpha << std::endl;
+                        if (rho_0 == 0){
+                            std::cout << "break down" << std::endl;
+                            break;
+                        }
                         auto beta = alpha * rho_1 / rho_0;
                         rho_0 = rho_1;
+
+//                        std::cout << "In Bi-CG part, when j = " << j <<", rho_1 is: " << rho_1 << std::endl;
+//                        std::cout << "In Bi-CG part, when j = " << j <<", beta is: " << beta << std::endl;
 
                         for (int i = 0; i <= j; ++i){
                             column(u_hat, i) = column(r_hat, i) - beta * column(u_hat, i);
                         }
 
+
                         column(u_hat, j + 1) = A * column(u_hat, j);
 
+//                        std::cout << "In Bi-CG part, when j = " << j <<", u_hat_[j] is: " << column(u_hat, j) << std::endl;
+//                        std::cout << "In Bi-CG part, when j = " << j <<", u_hat_[j+1] is: " << column(u_hat, j + 1) << std::endl;
+
                         auto gamma = trans(column(u_hat, j + 1)) * r0_tilde;
+                        if (gamma == 0){
+                            std::cout << "break down #2" << std::endl;
+                            break;
+                        }
+//                        std::cout << "In Bi-CG part, when j = " << j <<", gamma is: " << gamma << std::endl;
+//                        std::cout << "In Bi-CG part, when j = " << j <<", rho_0 is: " << rho_0 << std::endl;
                         alpha = rho_0 / gamma;
 
+//                        std::cout << "In Bi-CG part, when j = " << j <<", alpha is: " << alpha << std::endl;
+
                         for (int i = 0; i <= j; ++i){
+//                            std::cout << "In Bi-CG part, when j = " << j <<" i = " << i  <<", r_hat_0 is: " << column(r_hat, i) << std::endl;
+//                            std::cout << "In Bi-CG part, when j = " << j <<", alpha is: " << alpha << std::endl;
+//                            std::cout << "In Bi-CG part, when j = " << j <<" i = " << i  <<", u_hat_1 is: " << column(u_hat, i + 1) << std::endl;
                             column(r_hat, i) -= alpha * column(u_hat, i + 1);
+//                            std::cout << "In Bi-CG part, when j = " << j <<" i = " << i  <<", r_hat_0 is: " << column(r_hat, i) << std::endl;
                         }
 
                         column(r_hat, j + 1) = A * column(r_hat, j);
                         x0_hat += alpha * column(u_hat, 0);
+
+//                        std::cout << "In Bi-CG part, when j = " << j <<", r_hat_0 is: " << column(r_hat, 0) << std::endl;
+//                        std::cout << "In Bi-CG part, when j = " << j <<", x0_hat is: " << x0_hat << std::endl;
                     }
+                    std::cout << "******************************************************************" << std::endl;
+
+                    std::cout << "After Bi-CG part, u_hat_0 is: " << column(u_hat, 0) << std::endl;
+                    std::cout << "After Bi-CG part, r_hat_0 is: " << column(r_hat, 0) << std::endl;
+                    std::cout << "After Bi-CG part, x0_hat is: " << x0_hat << std::endl;
 
 
                     // MR part
@@ -108,18 +153,29 @@ BLAZE_NAMESPACE_OPEN
                         gamma_dot_1[j] = trans(column(r_hat, 0)) * column(r_hat, j + 1) / sigma[j];
                     }
 
+//                    std::cout << "In MR part, gamma_dot_1[l-1] is: " << gamma_dot_1[l-1] << std::endl;
+
+
                     gamma_dot_0[l-1] = gamma_dot_1[l-1];
+
+//                    std::cout << "In MR part, gamma_dot_0[l-1] is: " << gamma_dot_0[l-1] << std::endl;
+//
+//                    std::cout << "In MR part, w is: " << w << std::endl;
+
                     w = gamma_dot_0[l-1];
+
+//                    std::cout << "In MR part, gamma_dot_0[l-1] is: " << gamma_dot_0[l-1] << std::endl;
+//                    std::cout << "In MR part, w is: " << w << std::endl;
 
                     for ( int j = l - 2; j >= 0; --j){
                         auto sum_1 = 0;
-                        for ( int i = j+1; i < l; ++i){
+                        for ( int i = j + 1; i < l; ++i){
                             sum_1 += tao(j, i) * gamma_dot_0[i];
                         }
                         gamma_dot_0[j] = gamma_dot_1[j] - sum_1;
                     }
 
-                    for ( int j = 0; j <= l - 2; ++j){
+                    for ( int j = 0; j < l - 1; ++j){
                         auto sum_2 = 0;
                         for ( int i = j+1; i < l - 1; ++i){
                             sum_2 += tao(j, i) * gamma_dot_0[i + 1];
@@ -131,15 +187,24 @@ BLAZE_NAMESPACE_OPEN
                     column(r_hat, 0) -= gamma_dot_1[l - 1] * column(r_hat, l);
                     column(u_hat, 0) -= gamma_dot_0[l - 1] * column(u_hat, l);
 
-                    for ( int j = 0; j <= l-2; ++j){
+                    for ( int j = 0; j < l - 1; ++j){
                         column(u_hat, 0) -= gamma_dot_0[j] * column(u_hat, j + 1);
                         x0_hat += gamma_dot_2[j] * column(r_hat, j + 1);
                         column(r_hat, 0) -= gamma_dot_1[j] * column(r_hat, j + 1);
                     }
+//                    std::cout << "******************************************************************" << std::endl;
+//
+//                    std::cout << "After MR part, u_hat_0 is: " << column(u_hat, 0) << std::endl;
+//                    std::cout << "After MR part, r_hat_0 is: " << column(r_hat, 0) << std::endl;
+//                    std::cout << "After MR part, x0_hat is: " << x0_hat << std::endl;
+
+
 
                     u0 = column(u_hat, 0);
                     r0 = column(r_hat, 0);
                     x0 = x0_hat;
+                    x = x0;
+
 
                     absolute_residual = norm(r0);
                     auto relative_residual = absolute_residual/absolute_residual_0;
@@ -151,6 +216,10 @@ BLAZE_NAMESPACE_OPEN
                         break;
                     }
                     ++iteration;
+
+//                    std::cout << "At the end, when k is: " << k << ", rho_0 is: " << rho_0 << std::endl;
+//                    std::cout << "At the end, when k is: " << k << ", w is: " << w << std::endl;
+
                 }
             }
 

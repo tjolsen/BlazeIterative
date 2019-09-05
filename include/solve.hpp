@@ -68,9 +68,8 @@ void solve_inplace(DynamicVector<T> &x,
     void solve_inplace(DynamicVector<T> &x,
                        const MatrixType &A,
                        const DynamicVector<T> &b,
-                       const int &l,
-                       TagType &tag,
-                       std::string Preconditioner)
+                       const std::size_t &l,
+                       TagType &tag)
     {
         //Compile-time assertions
         BLAZE_CONSTRAINT_MUST_BE_MATRIX_TYPE(MatrixType);
@@ -83,7 +82,7 @@ void solve_inplace(DynamicVector<T> &x,
         assert(A.rows() == A.columns() && "A must be a square matrix");
 
         // Call specific solver
-        detail::solve_impl(x, A, b, l, tag, Preconditioner);
+        detail::solve_impl(x, A, b, l, tag);
     };
 
 // For Arnoldi
@@ -227,12 +226,11 @@ DynamicVector<T> solve(const MatrixType &A,
     template<typename MatrixType, typename T, typename TagType>
     DynamicVector<T> solve(const MatrixType &A,
                            const DynamicVector<T> &b,
-                           const int &l,
-                           TagType &tag,
-                           std::string Preconditioner)
+                           const std::size_t &l,
+                           TagType &tag)
     {
         DynamicVector<T> x(b.size(), 0.0);
-        solve_inplace(x, A, b, l, tag, Preconditioner);
+        solve_inplace(x, A, b, l, tag);
 
         return x;
     };
