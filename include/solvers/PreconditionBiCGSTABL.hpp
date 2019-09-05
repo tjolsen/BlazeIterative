@@ -36,10 +36,10 @@ BLAZE_NAMESPACE_OPEN
 
                 std::size_t m = A.columns();
 
-                MatrixType M;
-                preconditioner_matrix<MatrixType, T>(Preconditioner,A,M);
+//                MatrixType M;
+//                preconditioner_matrix<MatrixType, T>(Preconditioner,A,M);
 
-                DynamicVector<T> r0 = b - (M * A) * x;
+                DynamicVector<T> r0 = b - A * x;
                 DynamicVector<T> r0_tilde(r0);
 
                 DynamicVector<T> u_minus1(r0.size());
@@ -63,10 +63,9 @@ BLAZE_NAMESPACE_OPEN
 
                 int k = -l;
 
-                auto error = 1;
-                double eps = 1e-8;
+                std::size_t iteration{0};
 
-                while (error > eps ) {
+                while (true) {
 
                     k += l;
 
@@ -81,7 +80,7 @@ BLAZE_NAMESPACE_OPEN
                         auto beta = alpha * rho_1 / rho_0;
                         rho_0 = rho_1;
 
-                        for (int i = 0; i <=j; ++i){
+                        for (int i = 0; i <= j; ++i){
                             column(u_hat, i) = column(r_hat, i) - beta * column(u_hat, i);
                         }
 
@@ -102,11 +101,11 @@ BLAZE_NAMESPACE_OPEN
                     // MR part
                     for (int j = 0; j < l; ++j){
                         for (int i = 0; i < j-1; ++i){
-                            tao(i, j) = trans(column(r_hat, j)) * column(r_hat, i) / sigma[i];
-                            column(r_hat, j) -= tao(i, j) * column(r_hat, i);
+                            tao(i, j) = trans(column(r_hat, j + 1)) * column(r_hat, i + 1) / sigma[i];
+                            column(r_hat, j + 1) -= tao(i, j) * column(r_hat, i + 1);
                         }
-                        sigma[j] = trans(column(r_hat, j)) * column(r_hat, j);
-                        gamma_dot_1[j] = trans(column(r_hat, 0)) * column(r_hat, j) / sigma[j];
+                        sigma[j] = trans(column(r_hat, j + 1)) * column(r_hat, j + 1);
+                        gamma_dot_1[j] = trans(column(r_hat, 0)) * column(r_hat, j + 1) / sigma[j];
                     }
 
                     gamma_dot_0[l-1] = gamma_dot_1[l-1];
@@ -133,16 +132,25 @@ BLAZE_NAMESPACE_OPEN
                     column(u_hat, 0) -= gamma_dot_0[l - 1] * column(u_hat, l);
 
                     for ( int j = 0; j <= l-2; ++j){
-                        column(u_hat, 0) -= gamma_dot_0[j] * column(u_hat, j);
-                        x0_hat += gamma_dot_2[j] * column(r_hat, j);
-                        column(r_hat, 0) -= gamma_dot_1[j] * column(r_hat, j);
+                        column(u_hat, 0) -= gamma_dot_0[j] * column(u_hat, j + 1);
+                        x0_hat += gamma_dot_2[j] * column(r_hat, j + 1);
+                        column(r_hat, 0) -= gamma_dot_1[j] * column(r_hat, j + 1);
                     }
 
                     u_minus1 = column(u_hat, 0);
                     r0 = column(r_hat, 0);
                     x0 = x0_hat;
 
-                    error = norm(r0);
+                    absolute_residual = norm(r0);
+                    auto relative_residual = absolute_residual/absolute_residual_0;
+                    if(tag.do_log()) {
+                        tag.log_residual(relative_residual);
+                    }
+
+                    if(tag.terminateIteration(iteration,absolute_residual,relative_residual)) {
+                        break;
+                    }
+                    ++iteration;
                 }
             }
 

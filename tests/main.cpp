@@ -71,7 +71,7 @@ int main() {
 
 
     // Test For PreconditionBiCGSTABL
-    std::size_t N = 10;
+    std::size_t N = 5;
     DynamicMatrix<double,false> A(N,N, 0.0);
     DynamicVector<double> b(N, 0.0);
     for(int i=0; i<N; ++i) {
@@ -83,9 +83,9 @@ int main() {
     std::size_t l = 1;
     std::cout << solve(A,b,l,tag, "Cholesky") << std::endl << std::endl;
 
-//    PreconditionBiCGSTABTag tag;
+//    BiCGSTABTag tag;
 //    tag.do_log() = true;
-//    std::cout << solve(A,b,tag, "Cholesky") << std::endl << std::endl;
+//    std::cout << solve(A,b,tag) << std::endl << std::endl;
 
 
 
