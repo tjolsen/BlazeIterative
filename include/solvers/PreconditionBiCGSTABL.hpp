@@ -42,10 +42,10 @@ BLAZE_NAMESPACE_OPEN
                 DynamicVector<T> r0 = b - A * x;
                 DynamicVector<T> r0_tilde(r0);
 
-                DynamicVector<T> u_minus1(r0.size());
+                DynamicVector<T> u0(m, 0);
                 DynamicVector<T> x0(x);
                 DynamicVector<T> x0_hat(x);
-                DynamicVector<T> sigma(l, 1);
+                DynamicVector<T> sigma(l);
                 DynamicVector<T> gamma_dot_0(l);
                 DynamicVector<T> gamma_dot_1(l);
                 DynamicVector<T> gamma_dot_2(l);
@@ -69,7 +69,7 @@ BLAZE_NAMESPACE_OPEN
 
                     k += l;
 
-                    column(u_hat, 0) = u_minus1;
+                    column(u_hat, 0) = u0;
                     column(r_hat, 0) = r0;
                     x0_hat = x0;
                     rho_0 = - w * rho_0;
@@ -137,7 +137,7 @@ BLAZE_NAMESPACE_OPEN
                         column(r_hat, 0) -= gamma_dot_1[j] * column(r_hat, j + 1);
                     }
 
-                    u_minus1 = column(u_hat, 0);
+                    u0 = column(u_hat, 0);
                     r0 = column(r_hat, 0);
                     x0 = x0_hat;
 
