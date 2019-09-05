@@ -63,7 +63,7 @@ void solve_inplace(DynamicVector<T> &x,
     detail::solve_impl(x, A, b, tag,Preconditioner);
 };
 
-// For PreconditionBiCGSTABL
+// For BiCGSTABL
     template<typename MatrixType, typename T, typename TagType>
     void solve_inplace(DynamicVector<T> &x,
                        const MatrixType &A,
@@ -222,7 +222,7 @@ DynamicVector<T> solve(const MatrixType &A,
         return x;
     };
 
-    // For PreconditionBiCGSTABL
+    // For BiCGSTABL
     template<typename MatrixType, typename T, typename TagType>
     DynamicVector<T> solve(const MatrixType &A,
                            const DynamicVector<T> &b,

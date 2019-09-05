@@ -21,6 +21,8 @@
 #include "Lanczos.hpp"
 #include "GMRES.hpp"
 #include "GMRESTag.hpp"
+#include "BiCGSTABL.hpp"
+#include "BiCGSTABLTag.hpp"
 #include "PreconditionBiCGSTABL.hpp"
 #include "PreconditionBiCGSTABLTag.hpp"
 
