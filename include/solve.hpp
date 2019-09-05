@@ -83,7 +83,7 @@ void solve_inplace(DynamicVector<T> &x,
         assert(A.rows() == A.columns() && "A must be a square matrix");
 
         // Call specific solver
-        detail::solve_impl(x, A, b, l, tag,Preconditioner);
+        detail::solve_impl(x, A, b, l, tag, Preconditioner);
     };
 
 // For Arnoldi

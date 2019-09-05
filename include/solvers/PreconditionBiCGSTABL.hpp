@@ -7,7 +7,7 @@
 #ifndef BLAZE_ITERATIVE_PRECONDITIONBICGSTABL_HPP
 #define BLAZE_ITERATIVE_PRECONDITIONBICGSTABL_HPP
 
-#include "PreconditionBiCGSTABL.hpp"
+#include "PreconditionBiCGSTABLTag.hpp"
 
 BLAZE_NAMESPACE_OPEN
     ITERATIVE_NAMESPACE_OPEN
@@ -28,7 +28,7 @@ BLAZE_NAMESPACE_OPEN
                     const MatrixType &A,
                     const DynamicVector<T> &b,
                     const int &l,
-                    PreconditionBiCGSTABTag &tag,
+                    PreconditionBiCGSTABLTag &tag,
                     std::string Preconditioner="")
             {
 

@@ -57,21 +57,35 @@ int main() {
 //   }
 
 //  Test for GMRES
-    std::size_t N = 5;
-    DynamicMatrix<double,false> A(N,N);
-    DynamicVector<double> b(N);
-    A = {{0.46, 0.60, 0.74, 0.61, 0.85}, {0.56, 0.31, 0.80, 0.94, 0.76},{0.41, 0.19, 0.15, 0.33, 0.06},{0.03, 0.92, 0.15, 0.56, 0.08},{0.09, 0.06, 0.69, 0.42, 0.96}};
-    //x should be {0.1, 0.3, 0.5, 0.7, 0.9};
-    b = {1.788, 1.891, 0.458, 0.818, 1.53};
-    GMRESTag tag;
-    tag.do_log() = true;
-    DynamicVector<double> x0(N,0);
-    std::size_t n = N;
-    std::cout << solve(A,b,x0,tag,n) << std::endl << std::endl;
+//    std::size_t N = 5;
+//    DynamicMatrix<double,false> A(N,N);
+//    DynamicVector<double> b(N);
+//    A = {{0.46, 0.60, 0.74, 0.61, 0.85}, {0.56, 0.31, 0.80, 0.94, 0.76},{0.41, 0.19, 0.15, 0.33, 0.06},{0.03, 0.92, 0.15, 0.56, 0.08},{0.09, 0.06, 0.69, 0.42, 0.96}};
+//    //x should be {0.1, 0.3, 0.5, 0.7, 0.9};
+//    b = {1.788, 1.891, 0.458, 0.818, 1.53};
+//    GMRESTag tag;
+//    tag.do_log() = true;
+//    DynamicVector<double> x0(N,0);
+//    std::size_t n = N;
+//    std::cout << solve(A,b,x0,tag,n) << std::endl << std::endl;
 
 
     // Test For PreconditionBiCGSTABL
+    std::size_t N = 10;
+    DynamicMatrix<double,false> A(N,N, 0.0);
+    DynamicVector<double> b(N, 0.0);
+    for(int i=0; i<N; ++i) {
+        A(i,i) = 2.0;
+        b[i] = 1.0*(1+i);
+    }
+    PreconditionBiCGSTABLTag tag;
+    tag.do_log() = true;
+    std::size_t l = 1;
+    std::cout << solve(A,b,l,tag, "Cholesky") << std::endl << std::endl;
 
+//    PreconditionBiCGSTABTag tag;
+//    tag.do_log() = true;
+//    std::cout << solve(A,b,tag, "Cholesky") << std::endl << std::endl;
 
 
 
