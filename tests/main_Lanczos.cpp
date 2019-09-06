@@ -13,7 +13,7 @@ using namespace blaze::iterative;
 
 int main() {
 
-    // Test Arnoldi
+    // Test Lanczos
 
     std::size_t N = 6;
     DynamicMatrix<double,columnMajor> A(N,N,0);
@@ -27,20 +27,21 @@ int main() {
     w1 = {w[5],w[0],w[4],w[1],w[2],w[3]};
 
     std::size_t n = N;
-    ArnoldiTag tag;
+    LanczosTag tag;
     DynamicVector<complex<double>,columnVector> w2(n);
     DynamicMatrix<complex<double>,rowMajor> V2(n,n);
-    auto res1 = solve(A,b,tag,n);
-    auto sub_h = submatrix( res1.second, 0UL, 0UL, (res1.second.rows()-1), res1.second.columns());
-    eigen(sub_h,w2,V2);
+    auto res = solve(A,b,tag,n);
+    eigen(res.second,w2,V2);
 
     auto error = real(norm(w1 - w2));
 
     if (error < epsilon){
-        std::cout << " Pass test of Arnoldi" << std::endl;
+        std::cout << " Pass test of Lanczos" << std::endl;
         return EXIT_SUCCESS;
     } else{
-        std::cout << "Fail test of Arnoldi" << std::endl;
+        std::cout << "Fail test of Lanczos" << std::endl;
         return EXIT_FAILURE;
     }
+
 }
+
