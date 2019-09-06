@@ -13,4 +13,7 @@ target_link_libraries(test_gmres PRIVATE BlazeIterative)
 add_executable(test_cg main_CG.cpp)
 target_link_libraries(test_cg PRIVATE BlazeIterative)
 
+add_executable(test_bicgstab main_BiCGSTAB.cpp)
+target_link_libraries(test_bicgstab PRIVATE BlazeIterative)
+
 

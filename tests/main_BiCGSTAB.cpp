@@ -13,7 +13,7 @@ using namespace blaze::iterative;
 
 int main() {
 
-    // Test CG
+    // Test BiCGSTAB
 
     std::size_t N = 10;
     DynamicMatrix<double,false> A(N,N, 0.0);
@@ -25,17 +25,17 @@ int main() {
         x1[i] += x1[i-1];
     }
 
-    ConjugateGradientTag tag;
+    BiCGSTABTag tag;
     tag.do_log() = true;
     auto x2 = solve(A,b,tag);
 
     auto error = norm(x1 - x2);
 
     if (error < epsilon){
-        std::cout << " Pass test of CG" << std::endl;
+        std::cout << " Pass test of BiCGSTAB" << std::endl;
         return EXIT_SUCCESS;
     } else{
-        std::cout << "Fail test of CG" << std::endl;
+        std::cout << "Fail test of BiCGSTAB" << std::endl;
         return EXIT_FAILURE;
     }
 
