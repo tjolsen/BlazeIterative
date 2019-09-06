@@ -7,4 +7,7 @@ target_link_libraries(test_lanczos PRIVATE BlazeIterative)
 add_executable(test_preconditionedcg main_PreconditionedCG.cpp)
 target_link_libraries(test_preconditionedcg PRIVATE BlazeIterative)
 
+add_executable(test_gmres main_GMRES.cpp)
+target_link_libraries(test_gmres PRIVATE BlazeIterative)
+
 
