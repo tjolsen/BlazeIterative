@@ -71,6 +71,7 @@ int main() {
 
 
     // Test For PreconditionBiCGSTABL
+    // Test For BiCGSTABL
     std::size_t N = 5;
     DynamicMatrix<double,false> A(N,N);
     DynamicVector<double> b(N);
