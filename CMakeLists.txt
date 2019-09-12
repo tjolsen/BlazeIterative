@@ -56,6 +56,8 @@ target_include_directories(BlazeIterative INTERFACE
 #==========================================
 find_package(blaze REQUIRED)
 target_link_libraries(BlazeIterative INTERFACE blaze::blaze)
+find_package(LAPACK REQUIRED)
+target_link_libraries(BlazeIterative INTERFACE  ${LAPACK_LIBRARIES})
 
 #==========================================
 # Install library
