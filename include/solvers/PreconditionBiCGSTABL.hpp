@@ -4,10 +4,11 @@
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef BLAZE_ITERATIVE_BICGSTABL_HPP
-#define BLAZE_ITERATIVE_BICGSTABL_HPP
+#ifndef BLAZE_ITERATIVE_PRECONDITIONBICGSTABL_HPP
+#define BLAZE_ITERATIVE_PRECONDITIONBICGSTABL_HPP
 
-#include "BiCGSTABLTag.hpp"
+#include "PreconditionBiCGSTABLTag.hpp"
+#include "PreconditionCG.hpp"
 #include <iostream>
 
 BLAZE_NAMESPACE_OPEN
@@ -17,6 +18,7 @@ BLAZE_NAMESPACE_OPEN
 
 
 /**
+ *  Implementation of the Preconditioned BiCGSTABL method
  *  Based on the paper "BICGSTAB(l) for linear equations involving unsymmetric matrices with complex spectrum"
  */
             template<typename MatrixType, typename T>
@@ -25,10 +27,16 @@ BLAZE_NAMESPACE_OPEN
                     const MatrixType &A,
                     const DynamicVector<T> &b,
                     const std::size_t &l,
-                    BiCGSTABLTag &tag)
+                    PreconditionBiCGSTABLTag &tag,
+                    std::string Preconditioner=""
+                    )
             {
 
+
                 std::size_t m = A.columns();
+
+                MatrixType M;
+                preconditioner_matrix<MatrixType, T>(Preconditioner,A,M);
 
                 DynamicVector<T> r0 = b - A * x;
                 DynamicVector<T> r0_tilde(r0);
@@ -164,4 +172,4 @@ BLAZE_NAMESPACE_OPEN
     ITERATIVE_NAMESPACE_CLOSE
 BLAZE_NAMESPACE_CLOSE
 
-#endif //BLAZE_ITERATIVE_BICGSTABL_HPP
+#endif //BLAZE_ITERATIVE_PRECONDITIONBICGSTABL_HPP

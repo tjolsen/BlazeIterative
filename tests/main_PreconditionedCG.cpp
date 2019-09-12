@@ -25,6 +25,7 @@ int main() {
         x1[i] += x1[i-1];
     }
 
+
     PreconditionCGTag tag;
     tag.do_log() = true;
     auto x2 = solve(A,b,tag, "incomplete Cholesky factorization");
@@ -40,3 +41,4 @@ int main() {
     }
 
 }
+

@@ -37,12 +37,14 @@ int main() {
 
     auto error = real(norm(w1 - w2));
 
+
     if (error < EPSILON){
+
         std::cout << " Pass test of Arnoldi" << std::endl;
         return EXIT_SUCCESS;
     } else{
         std::cout << "Fail test of Arnoldi" << std::endl;
         return EXIT_FAILURE;
     }
-}
 
+}

@@ -1,4 +1,3 @@
-
 // Copyright (c)   2017 Tyler Olsen
 //                 2018 Patrick Diehl
 //                 2019 Nanmiao Wu
@@ -36,6 +35,7 @@ int main() {
 
     auto error = real(norm(w1 - w2));
 
+
     if (error < EPSILON){
         std::cout << " Pass test of Lanczos" << std::endl;
         return EXIT_SUCCESS;
@@ -45,5 +45,3 @@ int main() {
     }
 
 }
-
-

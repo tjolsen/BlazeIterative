@@ -1,5 +1,6 @@
 // Copyright (c)   2017 Tyler Olsen
 //                 2018 Patrick Diehl
+//                 2019 Nanmiao Wu
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
@@ -62,6 +63,28 @@ void solve_inplace(DynamicVector<T> &x,
     // Call specific solver
     detail::solve_impl(x, A, b, tag,Preconditioner);
 };
+
+// For BiCGSTABL
+    template<typename MatrixType, typename T, typename TagType>
+    void solve_inplace(DynamicVector<T> &x,
+                       const MatrixType &A,
+                       const DynamicVector<T> &b,
+                       const std::size_t &l,
+                       TagType &tag)
+    {
+        //Compile-time assertions
+        BLAZE_CONSTRAINT_MUST_BE_MATRIX_TYPE(MatrixType);
+        static_assert(std::is_same<T, typename MatrixType::ElementType>::value,
+                      "Matrix and vector data types must be the same");
+
+        //Run-time assertions checking conditions that would be problems later anyway
+        assert(A.columns() == b.size() && "A and b must have consistent dimensions");
+        assert(x.size() == b.size() && "x and b must be the same length");
+        assert(A.rows() == A.columns() && "A must be a square matrix");
+
+        // Call specific solver
+        detail::solve_impl(x, A, b, l, tag);
+    };
 
 // For Arnoldi
 // Lanczos
@@ -196,6 +219,19 @@ DynamicVector<T> solve(const MatrixType &A,
     {
         DynamicVector<T> x(b.size(), 0.0);
         solve_inplace(x, A, b, x0, tag, n);
+
+        return x;
+    };
+
+    // For BiCGSTABL
+    template<typename MatrixType, typename T, typename TagType>
+    DynamicVector<T> solve(const MatrixType &A,
+                           const DynamicVector<T> &b,
+                           const std::size_t &l,
+                           TagType &tag)
+    {
+        DynamicVector<T> x(b.size(), 0.0);
+        solve_inplace(x, A, b, l, tag);
 
         return x;
     };
