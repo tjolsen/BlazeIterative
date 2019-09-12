@@ -1,4 +1,4 @@
-## Blaze-Iterative
+## Blaze-Iterative [![CircleCI](https://circleci.com/gh/STEllAR-GROUP/BlazeIterative/tree/master.svg?style=svg)](https://circleci.com/gh/STEllAR-GROUP/BlazeIterative/tree/master)
 ===============
 
 This is a set of iterative linear system solvers intended for use
@@ -12,13 +12,14 @@ The API is currently based on a tag-dispatch system to choose a particular algor
  #### [Arnoldi](https://github.com/STEllAR-GROUP/BlazeIterative/blob/master/docs/Arnoldi.md)
  #### [Lanczos](https://github.com/STEllAR-GROUP/BlazeIterative/blob/master/docs/Lanczos.md)
  #### [Preconditioned CG](https://github.com/STEllAR-GROUP/BlazeIterative/blob/master/docs/Precondition%20Conjugate%20Gradient.md)
+ #### [GMRES](https://github.com/STEllAR-GROUP/BlazeIterative/blob/master/docs/GMRES.md)
+
+
 
 
 ### Planned algorithms:
 
-#### (Preconditioned) BiCGSTAB(l)
-#### [GMRES](https://github.com/STEllAR-GROUP/BlazeIterative/blob/master/docs/GMRES.md)
-
+#### Preconditioned BiCGSTAB(l)
 
 
 ### Potential algorithms (if sufficient interest):

@@ -25,18 +25,20 @@ int main() {
         x1[i] += x1[i-1];
     }
 
-     PreconditionCGTag tag;
-     tag.do_log() = true;
-     auto x2 = solve(A,b,tag, "incomplete Cholesky factorization");
 
-     auto error = norm(x1 - x2);
+    PreconditionCGTag tag;
+    tag.do_log() = true;
+    auto x2 = solve(A,b,tag, "incomplete Cholesky factorization");
 
-     if (error < epsilon){
-         std::cout << " Pass test of Preconditioned CG" << std::endl;
-         return EXIT_SUCCESS;
-     } else{
-         std::cout << "Fail test of Preconditioned CG" << std::endl;
-         return EXIT_FAILURE;
-     }
+    auto error = norm(x1 - x2);
+
+    if (error < EPSILON){
+        std::cout << " Pass test of Preconditioned CG" << std::endl;
+        return EXIT_SUCCESS;
+    } else{
+        std::cout << "Fail test of Preconditioned CG" << std::endl;
+        return EXIT_FAILURE;
+    }
 
 }
+

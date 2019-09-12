@@ -30,13 +30,15 @@ int main() {
     auto x2 = solve(A,b,tag, "Cholesky");
 
     auto error = norm(x1 - x2);
-    
-    if (error < epsilon){
+
+
+    if (error < EPSILON){
         std::cout << " Pass test of Preconditioned BiCGSTAB" << std::endl;
         return EXIT_SUCCESS;
     } else{
         std::cout << "Fail test of Preconditioned BiCGSTAB" << std::endl;
         return EXIT_FAILURE;
     }
+
 
 }

@@ -71,5 +71,6 @@ install(EXPORT BlazeIterativeConfig DESTINATION share/BlazeIterative/cmake
   NAMESPACE BlazeIterative::)
 
 if(BUILD_TESTS)
+  ENABLE_TESTING()
   add_subdirectory(tests)
 endif()

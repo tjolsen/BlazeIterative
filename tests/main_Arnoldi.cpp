@@ -24,6 +24,7 @@ int main() {
     DynamicMatrix<complex<double>,rowMajor> V(N,N);
     DynamicVector<complex<double>,columnVector> w1(N);
     eigen(A,w,V);
+
     w1 = {w[5],w[0],w[4],w[1],w[2],w[3]};
 
     std::size_t n = N;
@@ -36,11 +37,14 @@ int main() {
 
     auto error = real(norm(w1 - w2));
 
-    if (error < epsilon){
+
+    if (error < EPSILON){
+
         std::cout << " Pass test of Arnoldi" << std::endl;
         return EXIT_SUCCESS;
     } else{
         std::cout << "Fail test of Arnoldi" << std::endl;
         return EXIT_FAILURE;
     }
+
 }

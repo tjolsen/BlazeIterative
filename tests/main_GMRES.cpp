@@ -30,7 +30,8 @@ int main() {
 
     auto error = norm(x1 - x2);
 
-    if (error < epsilon){
+
+    if (error < EPSILON){
         std::cout << " Pass test of GMRES" << std::endl;
         return EXIT_SUCCESS;
     } else{
@@ -39,3 +40,4 @@ int main() {
     }
 
 }
+
