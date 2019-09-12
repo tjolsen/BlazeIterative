@@ -1,4 +1,4 @@
-## Blaze-Iterative
+## Blaze-Iterative [![CircleCI](https://circleci.com/gh/STEllAR-GROUP/BlazeIterative/tree/master.svg?style=svg)](https://circleci.com/gh/STEllAR-GROUP/BlazeIterative/tree/master)
 ===============
 
 This is a set of iterative linear system solvers intended for use
