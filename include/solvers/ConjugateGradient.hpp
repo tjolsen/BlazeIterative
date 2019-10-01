@@ -24,7 +24,7 @@ void solve_impl(
         std::string Preconditioner="")
 {
 
-    BLAZE_INTERNAL_ASSERT(A.isSymmetric(), "A must be a symmetric matrix")
+    BLAZE_INTERNAL_ASSERT(isSymmetric(A), "A must be a symmetric matrix")
 
     DynamicVector<T> r = b - A*x;
     DynamicVector<T> p(r);

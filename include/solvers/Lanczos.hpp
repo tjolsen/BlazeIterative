@@ -28,7 +28,7 @@ BLAZE_NAMESPACE_OPEN
                   )
             {
 
-                BLAZE_INTERNAL_ASSERT(A.isSymmetric(), "A must be a symmetric matrix")
+                BLAZE_INTERNAL_ASSERT(isSymmetric(A), "A must be a symmetric matrix")
 
                 // n is dimension of Krylov subspace, n >=1;
                 //

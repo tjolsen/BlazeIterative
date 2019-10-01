@@ -28,7 +28,7 @@ int main() {
 
     PreconditionCGTag tag;
     tag.do_log() = true;
-    auto x2 = solve(A,b,tag, "incomplete Cholesky factorization");
+    auto x2 = solve(A,b,tag, "incomplete_Cholesky");
 
     auto error = norm(x1 - x2);
 

@@ -42,23 +42,15 @@ ITERATIVE_NAMESPACE_OPEN
         template<typename MatrixType, typename T>
         void preconditioner_matrix(std::string type, const MatrixType &A, MatrixType &M){
 
-            if (type.compare("Jacobi preconditioning")==0){
+            if (type.compare("Jacobi")==0){
 
                 DiagonalMatrix<MatrixType> D(A.columns());
                 band<0L>(D) = band<0L>(A);
                 M = D;
             }
 
-            if (type.compare("Gauss Seidel preconditioning")==0){
-                MatrixType L(A.rows(),A.columns());
-                DiagonalMatrix<MatrixType> D(A.columns());
-                copyStrictlyLowerPart<MatrixType>(A, L);
-                band<0L>(D) = band<0L>(A);
 
-                M = L + D;
-            }
-
-            if (type.compare("Symmetric Gauss Seidel preconditioning")==0){
+            if (type.compare("Symmetric_Gauss_Seidel")==0){
 
                 MatrixType L(A.rows(),A.columns());
                 copyStrictlyLowerPart<MatrixType>(A, L);
@@ -69,16 +61,8 @@ ITERATIVE_NAMESPACE_OPEN
                 M = (D + L) * inv(D) * (D + trans(L));
             }
 
-            if (type.compare("SOR preconditioning")==0){
-                double omega = 1.2;  // omega is in the range of (0,2) to make sure converge
-                DiagonalMatrix<MatrixType> D(A.columns());
-                MatrixType L(A.rows(),A.columns());
-                band<0L>(D) = band<0L>(A);
-                copyStrictlyLowerPart<MatrixType>(A, L);
-                M = (D + omega * L)/omega;
-            }
 
-            if (type.compare("SSOR preconditioning")==0){
+            if (type.compare("SSOR")==0){
                 DiagonalMatrix<MatrixType> D(A.columns());
                 MatrixType L(A.rows(),A.columns());
                 copyStrictlyLowerPart<MatrixType>(A, L);
@@ -88,7 +72,7 @@ ITERATIVE_NAMESPACE_OPEN
             }
 
 
-            if (type.compare("incomplete Cholesky factorization") == 0 || type.compare("") == 0){
+            if (type.compare("incomplete_Cholesky") == 0 || type.compare("") == 0){
                 // The Cholesky factorization of A is A = LL*, where L is a lower triangular matrix.
                 // Incomplete Cholesky factorization precondition is M = KK*, where K is a sparse lower triangular matrix and is close to L.
                 // Solution is: finding the exact Cholesky decomposition, except that any entry is set to zero
@@ -115,7 +99,11 @@ ITERATIVE_NAMESPACE_OPEN
                 std::string Preconditioner="")
         {
 
-            BLAZE_INTERNAL_ASSERT(A.isSymmetric(), "A must be a symmetric matrix")
+            BLAZE_INTERNAL_ASSERT(isSymmetric(A), "A must be a symmetric matrix")
+
+            MatrixType L_pos;
+            llh( A, L_pos);
+            BLAZE_USER_ASSERT(A == L_pos* ctrans(L_pos), "A must be a positive definite matrix")
 
             MatrixType M;
             preconditioner_matrix<MatrixType, T>(Preconditioner,A,M);

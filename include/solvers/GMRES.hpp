@@ -82,7 +82,7 @@ BLAZE_NAMESPACE_OPEN
                     const std::size_t &n)
             {
 
-                BLAZE_INTERNAL_ASSERT(A.isSymmetric(), "A must be a symmetric matrix")
+                BLAZE_INTERNAL_ASSERT(isSymmetric(A), "A must be a symmetric matrix")
 
                 BLAZE_INTERNAL_ASSERT(n >= 1, "n must larger than or equal to 1")
 
