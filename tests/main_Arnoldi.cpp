@@ -31,9 +31,8 @@ int main() {
     ArnoldiTag tag;
     DynamicVector<complex<double>,columnVector> w2(n);
     DynamicMatrix<complex<double>,rowMajor> V2(n,n);
-    auto res1 = solve(A,b,tag,n);
-    auto sub_h = submatrix( res1.second, 0UL, 0UL, (res1.second.rows()-1), res1.second.columns());
-    eigen(sub_h,w2,V2);
+    w2 = solve(A,b,tag,n);
+
 
     auto error = real(norm(w1 - w2));
 

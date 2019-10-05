@@ -18,8 +18,7 @@ BLAZE_NAMESPACE_OPEN
 
             template<typename MatrixType, typename T>
             void  solve_impl(
-                    MatrixType &h,
-                    MatrixType &Q,
+                    DynamicVector<complex<T>> &x,
                     const MatrixType &A,
                     const DynamicVector<T> &b,
                     ArnoldiTag &tag,
@@ -46,9 +45,12 @@ BLAZE_NAMESPACE_OPEN
                 // A is m*m matrix
                 std::size_t m = b.size();
 
-                // Return Q and h
+                // Return a vector of eigenvalues
+               
                // DynamicMatrix<T> Q(m, (n + 1));
                // DynamicMatrix<T> h((n + 1), n);
+                DynamicMatrix<T> Q(m, n+1);
+                DynamicMatrix<T> h(n+1, n);
 
                 // let b be an arbitrary initial vector
                 column(Q, 0) = b / norm(b);
@@ -75,6 +77,10 @@ BLAZE_NAMESPACE_OPEN
                     }
 
                 }
+
+                auto sub_h = submatrix( h, 0UL, 0UL, (h.rows()-1), h.columns());
+                eigen(sub_h, x);
+                
 
             }; // end solve_imple function
 
