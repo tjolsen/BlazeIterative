@@ -67,7 +67,7 @@ void solve_inplace(DynamicVector<T> &x,
     // For Arnoldi
     // Lanczos
     template<typename MatrixType, typename T, typename TagType>
-    void solve_inplace(DynamicVector<complex<T>> &x,
+    void solve_inplace(DynamicVector<T> &x,
                        const MatrixType &A,
                        const DynamicVector<T> &b,
                        TagType &tag,
@@ -80,7 +80,6 @@ void solve_inplace(DynamicVector<T> &x,
 
         //Run-time assertions checking conditions that would be problems later anyway
         assert(A.columns() == b.size() && "A and b must have consistent dimensions");
-        assert(x.size() == b.size() && "x and b must be the same length");
         assert(isSymmetric(A) && "A must be a symmetric matrix");
         assert(n >= 1 && "n must be larger than or equal to 1");
 
@@ -170,15 +169,15 @@ DynamicVector<T> solve(const MatrixType &A,
 // For Arnoldi
 // For Lanczos
     template<typename MatrixType, typename T, typename TagType>
-    DynamicVector<complex<T>> solve(const MatrixType &A, const DynamicVector<T> &b, TagType &tag, const std::size_t &n)
+    DynamicVector<T> solve(const MatrixType &A, const DynamicVector<T> &b, TagType &tag, const std::size_t &n)
     {
         if(typeid(tag) == typeid(ArnoldiTag)){
-            DynamicVector<complex<T>> x(n, 0.0);
+            DynamicVector<T> x(n, 0.0);
             solve_inplace(x, A, b, tag, n);
             return x;
 
         } else if(typeid(tag) == typeid(LanczosTag)) {
-            DynamicVector<complex<T>> x(n, 0.0);
+            DynamicVector<T> x(n, 0.0);
             solve_inplace(x, A, b, tag, n);
             return x;
         }

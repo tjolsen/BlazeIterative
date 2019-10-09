@@ -10,7 +10,6 @@
 #include "IterativeCommon.hpp"
 #include "ArnoldiTag.hpp"
 
-
 BLAZE_NAMESPACE_OPEN
     ITERATIVE_NAMESPACE_OPEN
 
@@ -18,21 +17,20 @@ BLAZE_NAMESPACE_OPEN
 
             template<typename MatrixType, typename T>
             void  solve_impl(
-                    DynamicVector<complex<T>> &x,
+                    DynamicVector<T> &x,
                     const MatrixType &A,
                     const DynamicVector<T> &b,
                     ArnoldiTag &tag,
                     const std::size_t &n
-                   )
-            {
+                   ) {
 
                 BLAZE_INTERNAL_ASSERT(isSymmetric(A), "A must be a symmetric matrix")
 
                 // n is dimension of Krylov subspace, n >=1;
-               //
+                //
                 BLAZE_INTERNAL_ASSERT(n >= 1, "n must larger than or equal to 1")
 
-               // computes a basis of the n- Krylov subspace of A:
+                // computes a basis of the n- Krylov subspace of A:
                 // the space is spanned by{b, Ab, ..., A^(n-1)b}
                 // Input
                 // A: m * m matrix
@@ -46,11 +44,12 @@ BLAZE_NAMESPACE_OPEN
                 std::size_t m = b.size();
 
                 // Return a vector of eigenvalues
-               
-               // DynamicMatrix<T> Q(m, (n + 1));
-               // DynamicMatrix<T> h((n + 1), n);
-                DynamicMatrix<T> Q(m, n+1);
-                DynamicMatrix<T> h(n+1, n);
+
+                // DynamicMatrix<T> Q(m, (n + 1));
+                // DynamicMatrix<T> h((n + 1), n);
+                DynamicMatrix<T> Q(m, n + 1);
+                DynamicMatrix<T> h(n + 1, n);
+                DynamicVector<complex<double>> x_comp(n);
 
                 // let b be an arbitrary initial vector
                 column(Q, 0) = b / norm(b);
@@ -58,29 +57,29 @@ BLAZE_NAMESPACE_OPEN
                 // the next vector q_k = A* q_k_1
                 DynamicVector<T> v(m);
 
-                for (int k = 0; k < n; ++k ){
+                for (int k = 0; k < n; ++k) {
                     v = declsym(A) * column(Q, k);
 
-                    for (int j = 0; j < k+1; ++j){
-                        h(j,k) = ctrans(column(Q,j)) * v;
-                        v -= h(j,k) * column(Q,j);
+                    for (int j = 0; j < k + 1; ++j) {
+                        h(j, k) = ctrans(column(Q, j)) * v;
+                        v -= h(j, k) * column(Q, j);
                     }
 
-                    h(k+1, k) = norm(v);
+                    h(k + 1, k) = norm(v);
                     // if h(k+1, k) = 0
                     double eps = 1e-12;
-                    if (h(k+1, k) > eps){
-                        column(Q,k+1) = v / h(k+1,k);
-                    }
-                    else{
+                    if (h(k + 1, k) > eps) {
+                        column(Q, k + 1) = v / h(k + 1, k);
+                    } 
+                    else {
                         break;
                     }
 
                 }
 
                 auto sub_h = submatrix( h, 0UL, 0UL, (h.rows()-1), h.columns());
-                eigen(sub_h, x);
-                
+                eigen(sub_h, x_comp);
+                x = real(x_comp);
 
             }; // end solve_imple function
 

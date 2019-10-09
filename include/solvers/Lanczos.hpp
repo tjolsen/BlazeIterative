@@ -7,7 +7,6 @@
 #ifndef BLAZE_ITERATIVE_LANCZOS_HPP
 #define BLAZE_ITERATIVE_LANCZOS_HPP
 
-#include <iostream>
 #include "IterativeCommon.hpp"
 #include "LanczosTag.hpp"
 
@@ -19,8 +18,8 @@ BLAZE_NAMESPACE_OPEN
 
             template<typename MatrixType, typename T>
             void  solve_impl(
-                    DynamicVector<complex<T>> &x,
-                    const MatrixType &A,
+                    DynamicVector<T> &x,
+                    const  MatrixType &A,
                     const DynamicVector<T> &b,
                     LanczosTag &tag,
                     const std::size_t &n
@@ -30,7 +29,7 @@ BLAZE_NAMESPACE_OPEN
                 BLAZE_INTERNAL_ASSERT(isSymmetric(A), "A must be a symmetric matrix")
 
                 // n is dimension of Krylov subspace, n >=1;
-                //
+                
                 BLAZE_INTERNAL_ASSERT(n >= 1, "n must larger than or equal to 1")
 
                 // computes a basis of the n- Krylov subspace of A:
@@ -43,13 +42,13 @@ BLAZE_NAMESPACE_OPEN
                 // Q: m * n matrix, the columns are an orthonormal
                 // h: n * n matrix, tridiagonal real symmetric
 
-
                 std::size_t m = A.columns();
                 DynamicVector<T> alpha(n);
                 DynamicVector<T> beta(n);
                 DynamicVector<T> Av(m);
                 DynamicMatrix<T> Q(m, n);
                 DynamicMatrix<T> h(n, n);
+                DynamicVector<complex<double>> x_comp(n);
 
 
              // with an example of a diagonal matrix A
@@ -79,7 +78,8 @@ BLAZE_NAMESPACE_OPEN
                 band<1>(h) = beta_1;
                 band<-1>(h) = beta_1;
 
-                eigen(h, x);
+                eigen(h, x_comp);
+                x = real(x_comp);
 
             }; // end solve_imple function
 

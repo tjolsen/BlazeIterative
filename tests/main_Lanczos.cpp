@@ -16,23 +16,23 @@ int main() {
     // Test Lanczos
 
     std::size_t N = 6;
-    DynamicMatrix<double> A(N,N);
+    DynamicMatrix<double,rowMajor> A(N, N, 0.0);
     band<0>(A) = {0, 1, 2, 3, 4, 100000};
-
     DynamicVector<double> b(N, 1);
     DynamicVector<complex<double>,columnVector> w(N);
-    DynamicVector<complex<double>,columnVector> w1(N);
+    DynamicVector<double,columnVector> w1(N);
+    DynamicVector<double,columnVector> w2(N);
     eigen(A,w);
-    w1 = {w[5],w[0],w[4],w[1],w[2],w[3]};
+    w1 = real(w);
+    w2 = {w1[5],w1[0],w1[4],w1[1],w1[2],w1[3]};
 
     std::size_t n = N;
     LanczosTag tag;
-    DynamicVector<complex<double>,columnVector> w2(n);
-    w2 = solve(A,b,tag,n);
-
-    auto error = real(norm(w1 - w2));
-
-
+    DynamicVector<double, columnVector> w3(n);
+    w3 = solve(A,b,tag,n);
+    
+    auto error = norm(w2 - w3);
+    
     if (error < EPSILON){
         std::cout << " Pass test of Lanczos" << std::endl;
         return EXIT_SUCCESS;
