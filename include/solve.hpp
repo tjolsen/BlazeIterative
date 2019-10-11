@@ -14,6 +14,8 @@
 #include <cstring>
 #include <utility>
 
+#include <iostream>
+
 BLAZE_NAMESPACE_OPEN
 ITERATIVE_NAMESPACE_OPEN
 
@@ -171,12 +173,12 @@ DynamicVector<T> solve(const MatrixType &A,
     template<typename MatrixType, typename T, typename TagType>
     DynamicVector<T> solve(const MatrixType &A, const DynamicVector<T> &b, TagType &tag, const std::size_t &n)
     {
-        if(typeid(tag) == typeid(ArnoldiTag)){
+        if(typeid(tag).name() == typeid(ArnoldiTag).name()) {
             DynamicVector<T> x(n, 0.0);
             solve_inplace(x, A, b, tag, n);
             return x;
 
-        } else if(typeid(tag) == typeid(LanczosTag)) {
+        } else {
             DynamicVector<T> x(n, 0.0);
             solve_inplace(x, A, b, tag, n);
             return x;

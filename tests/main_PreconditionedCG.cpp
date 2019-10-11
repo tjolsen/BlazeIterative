@@ -14,7 +14,6 @@ using namespace blaze::iterative;
 int main() {
 
     // Test Preconditioned CG
-
     std::size_t N = 10;
     DynamicMatrix<double,false> A(N,N, 0.0);
     DynamicVector<double> b(N, 0.0);
@@ -29,14 +28,14 @@ int main() {
     PreconditionCGTag tag;
     tag.do_log() = true;
     auto x2 = solve(A,b,tag, "incomplete_Cholesky");
-
+    
     auto error = norm(x1 - x2);
 
     if (error < EPSILON){
         std::cout << " Pass test of Preconditioned CG" << std::endl;
         return EXIT_SUCCESS;
     } else{
-        std::cout << "Fail test of Preconditioned CG" << std::endl;
+        std::cout << " Fail test of Preconditioned CG" << std::endl;
         return EXIT_FAILURE;
     }
 

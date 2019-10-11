@@ -9,7 +9,6 @@
 #define BLAZE_ITERATIVE_PRECONDITIONCG_HPP
 
 #include "PreconditionCGTag.hpp"
-
 BLAZE_NAMESPACE_OPEN
 ITERATIVE_NAMESPACE_OPEN
 
@@ -21,8 +20,8 @@ ITERATIVE_NAMESPACE_OPEN
         {
 
             decltype(auto) target( derestrict( ~dst ) );
-            assert(dst.rows() == target.rows());
-            assert(dst.columns() == target.columns());
+            resize( target, (~src).rows(), (~src).columns() );
+            reset( target );
 
 
             for(signed long int i=1UL; i<(~src).rows(); ++i ) {
@@ -98,7 +97,6 @@ ITERATIVE_NAMESPACE_OPEN
                 PreconditionCGTag &tag,
                 std::string Preconditioner="")
         {
-
             BLAZE_INTERNAL_ASSERT(isSymmetric(A), "A must be a symmetric matrix")
 
             MatrixType L_pos;
@@ -115,20 +113,19 @@ ITERATIVE_NAMESPACE_OPEN
             DynamicVector<T> p(z);
             DynamicVector<T> Ap(p.size());
 
-            auto absolute_residual_0 = trans(r) * r;
-            auto absolute_residual = absolute_residual_0;
+            T absolute_residual_0 = trans(r) * r;
+            T absolute_residual = absolute_residual_0;
 
             if(tag.do_log()) {
                 tag.log_residual(absolute_residual/absolute_residual_0);
             }
 
-
             std::size_t iteration{0};
             while(true) {
                 Ap = declsym(A)*p;
 
-                auto alpha = trans(r) * z/(trans(p) * Ap);
-                auto precondition_residual_prev = trans(z) * r;
+                T alpha = trans(r) * z/(trans(p) * Ap);
+                T precondition_residual_prev = trans(z) * r;
                 x += alpha * p;
                 r -= alpha * Ap;
 
@@ -144,7 +141,7 @@ ITERATIVE_NAMESPACE_OPEN
                 }
 
                 z = Minv * r;
-                auto beta = trans(z)*r/precondition_residual_prev;
+                T beta = trans(z)*r/precondition_residual_prev;
                 p = z + beta * p;
 
                 ++iteration;
