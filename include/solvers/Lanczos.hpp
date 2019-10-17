@@ -47,7 +47,7 @@ BLAZE_NAMESPACE_OPEN
                 DynamicVector<T> beta(n);
                 DynamicVector<T> Av(m);
                 DynamicMatrix<T> Q(m, n);
-                DynamicMatrix<T> h(n, n);
+                DynamicMatrix<T> h(n, n, 0);
                 DynamicVector<complex<double>> x_comp(n);
 
 
