@@ -27,7 +27,7 @@ BLAZE_NAMESPACE_OPEN
                 BLAZE_INTERNAL_ASSERT(isSymmetric(A), "A must be a symmetric matrix")
 
                 // n is dimension of Krylov subspace, n >=1;
-                //
+
                 BLAZE_INTERNAL_ASSERT(n >= 1, "n must larger than or equal to 1")
 
                 // computes a basis of the n- Krylov subspace of A:
@@ -45,10 +45,8 @@ BLAZE_NAMESPACE_OPEN
 
                 // Return a vector of eigenvalues
 
-                // DynamicMatrix<T> Q(m, (n + 1));
-                // DynamicMatrix<T> h((n + 1), n);
                 DynamicMatrix<T> Q(m, n + 1);
-                DynamicMatrix<T> h(n + 1, n);
+                DynamicMatrix<T> h(n + 1, n, 0);
                 DynamicVector<complex<double>> x_comp(n);
 
                 // let b be an arbitrary initial vector
