@@ -11,6 +11,8 @@
 #include "GMRESTag.hpp"
 #include <utility>
 
+#include <iostream>
+
 
 BLAZE_NAMESPACE_OPEN
     ITERATIVE_NAMESPACE_OPEN
@@ -76,12 +78,10 @@ BLAZE_NAMESPACE_OPEN
                     DynamicVector<T> &x,
                     const MatrixType &A,
                     const DynamicVector<T> &b,
-                    const DynamicVector<T> &x0,
                     GMRESTag &tag,
                     const std::size_t &n)
             {
 
-                BLAZE_INTERNAL_ASSERT(isSymmetric(A), "A must be a symmetric matrix")
 
                 BLAZE_INTERNAL_ASSERT(n >= 1, "n must larger than or equal to 1")
 
@@ -89,17 +89,22 @@ BLAZE_NAMESPACE_OPEN
 
 
                 std::size_t m = A.columns();
-                DynamicVector<T> r(m);
+                DynamicVector<T> r(m,0);
                 DynamicMatrix<T> H(n+1,n,0);
                 DynamicMatrix<T> Q(m,n+1,0);
                 DynamicVector<T> sn(n,0);
                 DynamicVector<T> cs(n,0);
                 DynamicVector<T> e1(m,0);
-                DynamicVector<T> beta(m);
-                DynamicVector<T> err_set(n+1);
+                DynamicVector<T> beta(m,0);
+                DynamicVector<T> err_set(n+1,0);
+
+                DynamicMatrix<T> H_sub(n,n,0);
+                DynamicMatrix<T> Q_sub(n,n,0);
+                DynamicVector<T> beta_sub (n,0);
+                DynamicVector<T> y(n,0);
 
 
-                r = b - A * x0;
+                r = b - A * x;
                 auto err = norm(r) / norm(b);
                 err_set[0] = err;
 
@@ -128,11 +133,10 @@ BLAZE_NAMESPACE_OPEN
                     }
 
                 }
-
-                auto H_sub = submatrix(H, 0, 0, n, n);
-                auto beta_sub = subvector(beta, 0, n);
-                auto y = inv(H_sub) *  beta_sub;
-                auto Q_sub = submatrix(Q, 0, 0, n, n);
+                H_sub = submatrix(H, 0, 0, n, n);
+                beta_sub = subvector(beta, 0, n);
+                y = inv(H_sub) *  beta_sub;
+                Q_sub = submatrix(Q, 0, 0, n, n);
                 x += Q_sub * y;
 
 

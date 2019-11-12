@@ -24,9 +24,8 @@ int main() {
 
     GMRESTag tag;
     tag.do_log() = true;
-    DynamicVector<double> x0(N,0);
     std::size_t n = N;
-    auto x2 = solve(A,b,x0,tag,n);
+    auto x2 = solve(A,b,tag,n);
 
     auto error = norm(x1 - x2);
 

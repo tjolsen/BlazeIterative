@@ -68,6 +68,7 @@ void solve_inplace(DynamicVector<T> &x,
 
     // For Arnoldi
     // Lanczos
+    // GMRES
     template<typename MatrixType, typename T, typename TagType>
     void solve_inplace(DynamicVector<T> &x,
                        const MatrixType &A,
@@ -82,35 +83,12 @@ void solve_inplace(DynamicVector<T> &x,
 
         //Run-time assertions checking conditions that would be problems later anyway
         assert(A.columns() == b.size() && "A and b must have consistent dimensions");
-        assert(isSymmetric(A) && "A must be a symmetric matrix");
         assert(n >= 1 && "n must be larger than or equal to 1");
 
         // Call specific solver
         detail::solve_impl(x, A, b, tag, n);
     };
 
-// For GMRES
-    template<typename MatrixType, typename T, typename TagType>
-    void solve_inplace(DynamicVector<T> &x,
-                       const MatrixType &A,
-                       const DynamicVector<T> &b,
-                       const DynamicVector<T> &x0,
-                       TagType &tag,
-                       const std::size_t &n)
-    {
-        //Compile-time assertions
-        BLAZE_CONSTRAINT_MUST_BE_MATRIX_TYPE(MatrixType);
-        static_assert(std::is_same<T, typename MatrixType::ElementType>::value,
-                      "Matrix and vector data types must be the same");
-
-        //Run-time assertions checking conditions that would be problems later anyway
-        assert(A.columns() == b.size() && "A and b must have consistent dimensions");
-        assert(x.size() == b.size() && "x and b must be the same length");
-        assert(A.rows() == A.columns() && "A must be a square matrix");
-
-        // Call specific solver
-        detail::solve_impl(x, A, b, x0, tag, n);
-    };
 
 /**
  * \brief Solver the linear system \f$ Ax = b \f$ using an iterative solver.
@@ -170,6 +148,7 @@ DynamicVector<T> solve(const MatrixType &A,
 
 // For Arnoldi
 // For Lanczos
+// For GMRES
     template<typename MatrixType, typename T, typename TagType>
     DynamicVector<T> solve(const MatrixType &A, const DynamicVector<T> &b, TagType &tag, const std::size_t &n)
     {
@@ -178,22 +157,16 @@ DynamicVector<T> solve(const MatrixType &A,
             solve_inplace(x, A, b, tag, n);
             return x;
 
+        } else if(typeid(tag).name() == typeid(LanczosTag).name()) {
+            DynamicVector<T> x(n, 0.0);
+            solve_inplace(x, A, b, tag, n);
+            return x;
         } else {
             DynamicVector<T> x(n, 0.0);
             solve_inplace(x, A, b, tag, n);
             return x;
         }
 
-    };
-
-    // For GMRES
-    template<typename MatrixType, typename T, typename TagType>
-    DynamicVector<T> solve(const MatrixType &A, const DynamicVector<T> &b, const DynamicVector<T> &x0, TagType &tag, const std::size_t &n)
-    {
-        DynamicVector<T> x(b.size(), 0.0);
-        solve_inplace(x, A, b, x0, tag, n);
-
-        return x;
     };
 
 
