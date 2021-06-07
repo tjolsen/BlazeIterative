@@ -7,7 +7,7 @@
 #ifndef BLAZE_ITERATIVE_LANCZOS_HPP
 #define BLAZE_ITERATIVE_LANCZOS_HPP
 
-#include "IterativeCommon.hpp"
+#include <BlazeIterative/IterativeCommon.hpp>
 #include "LanczosTag.hpp"
 
 

@@ -49,8 +49,8 @@ set(SOURCE_FILES
 # in order to avoid an error triggering (cmake v 3.9)
 target_sources(BlazeIterative INTERFACE $<BUILD_INTERFACE:${SOURCE_FILES}>)
 target_include_directories(BlazeIterative INTERFACE
-  $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
-  $<INSTALL_INTERFACE:include/BlazeIterative>
+  $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include/>
+  $<INSTALL_INTERFACE:include/>
 )
 
 #==========================================
@@ -67,7 +67,7 @@ target_link_libraries(BlazeIterative INTERFACE  ${LAPACK_LIBRARIES})
 install(TARGETS BlazeIterative EXPORT BlazeIterativeConfig)
 install(
   DIRECTORY include/
-  DESTINATION include/BlazeIterative
+  DESTINATION include/
   FILES_MATCHING PATTERN "*.hpp")
 install(EXPORT BlazeIterativeConfig DESTINATION share/BlazeIterative/cmake
   NAMESPACE BlazeIterative::)

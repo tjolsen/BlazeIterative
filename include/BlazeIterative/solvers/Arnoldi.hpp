@@ -7,7 +7,7 @@
 #ifndef BLAZE_ITERATIVE_ARNOLDI_HPP
 #define BLAZE_ITERATIVE_ARNOLDI_HPP
 
-#include "IterativeCommon.hpp"
+#include <BlazeIterative/IterativeCommon.hpp>
 #include "ArnoldiTag.hpp"
 
 BLAZE_NAMESPACE_OPEN

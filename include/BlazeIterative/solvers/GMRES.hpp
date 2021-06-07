@@ -7,7 +7,7 @@
 #ifndef BLAZE_ITERATIVE_GMRES_HPP
 #define BLAZE_ITERATIVE_GMRES_HPP
 
-#include "IterativeCommon.hpp"
+#include <BlazeIterative/IterativeCommon.hpp>
 #include "GMRESTag.hpp"
 #include <utility>
 

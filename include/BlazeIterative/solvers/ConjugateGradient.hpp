@@ -6,7 +6,7 @@
 #ifndef BLAZE_ITERATIVE_CONJUGATEGRADIENT_HPP
 #define BLAZE_ITERATIVE_CONJUGATEGRADIENT_HPP
 
-#include "IterativeCommon.hpp"
+#include "BlazeIterative/IterativeCommon.hpp"
 #include "ConjugateGradientTag.hpp"
 
 

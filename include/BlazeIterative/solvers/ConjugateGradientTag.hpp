@@ -6,8 +6,8 @@
 #ifndef BLAZE_ITERATIVE_CONJUGATEGRADIENTTAG_HPP
 #define BLAZE_ITERATIVE_CONJUGATEGRADIENTTAG_HPP
 
-#include "IterativeCommon.hpp"
-#include "IterativeTag.hpp"
+#include "BlazeIterative/IterativeCommon.hpp"
+#include "BlazeIterative/IterativeTag.hpp"
 
 BLAZE_NAMESPACE_OPEN
 ITERATIVE_NAMESPACE_OPEN

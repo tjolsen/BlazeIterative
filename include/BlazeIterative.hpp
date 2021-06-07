@@ -7,11 +7,11 @@
 #ifndef BLAZE_ITERATIVE_BLAZEITERATIVE_HPP
 #define BLAZE_ITERATIVE_BLAZEITERATIVE_HPP
 
-#include "IterativeCommon.hpp"
-#include "IterativeTag.hpp"
-#include "solve.hpp"
+#include <BlazeIterative/IterativeCommon.hpp>
+#include <BlazeIterative/IterativeTag.hpp>
+#include <BlazeIterative/solve.hpp>
 
-#include "solvers/solvers.hpp"
+#include <BlazeIterative/solvers/solvers.hpp>
 
 
 #define EPSILON 1.0e-8

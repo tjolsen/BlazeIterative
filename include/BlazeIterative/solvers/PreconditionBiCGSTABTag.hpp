@@ -3,18 +3,18 @@
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef BLAZE_ITERATIVE_BICGSTABTAG_HPP
-#define BLAZE_ITERATIVE_BICGSTABTAG_HPP
+#ifndef BLAZE_ITERATIVE_PRECONDITIONBICGSTABTAG_HPP
+#define BLAZE_ITERATIVE_PRECONDITIONBICGSTABTAG_HPP
 
-#include "IterativeCommon.hpp"
-#include "IterativeTag.hpp"
+#include "BlazeIterative/IterativeCommon.hpp"
+#include "BlazeIterative/IterativeTag.hpp"
 
 BLAZE_NAMESPACE_OPEN
 ITERATIVE_NAMESPACE_OPEN
 
 /**
- * \class BiCGSTABTag
- * \brief Tag type to dispatch a BiCGSTAB solver
+ * \class PreconditionBiCGSTABTag
+ * \brief Tag type to dispatch a preconditioned BiCGSTAB   solver
  *
  * BiCGSTAB is a modified version of the biconjugate gradient
  * method with improved convergence properties. It is suitable
@@ -22,11 +22,11 @@ ITERATIVE_NAMESPACE_OPEN
  * non-preconditioned version of the algorithm.
  *
  */
-class BiCGSTABTag : public IterativeTag
+class PreconditionBiCGSTABTag : public IterativeTag
 {
 public:
-    BiCGSTABTag() {
-        solverName = "BiCGSTAB";
+    PreconditionBiCGSTABTag() {
+        solverName = "PreconditionBiCGSTAB";
     }
 };
 
@@ -34,4 +34,4 @@ ITERATIVE_NAMESPACE_CLOSE
 BLAZE_NAMESPACE_CLOSE
 
 
-#endif //BLAZE_ITERATIVE_BICGSTABTAG_HPP
+#endif //BLAZE_ITERATIVE_PRECONDITIONBICGSTABTAG_HPP
